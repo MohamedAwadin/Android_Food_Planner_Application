@@ -1,5 +1,6 @@
 package com.example.elakil.presentation.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,16 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.elakil.R;
+import com.example.elakil.data.MealsRepository;
+import com.example.elakil.data.MealsRepositoryImpl;
+import com.example.elakil.data.local.MealsLocalDataSource;
+import com.example.elakil.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.data.remote.MealsRemoteDataSource;
+import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
+import com.example.elakil.presentation.mealdetails.DishAllDetailedActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements HomeContract.View {
     private RecyclerView recyclerViewDaily , recyclerViewMoreMeals ;
     private ProgressBar progressBar ;
     private MealAdapter dailyMealAdapter, moreMealAdapter;
@@ -47,7 +56,63 @@ public class HomeFragment extends Fragment {
         dailyMeals = new ArrayList<>();
         moreMeals = new ArrayList<>();
 
-        // Inflate the layout for this fragment
+        dailyMealAdapter = new MealAdapter(dailyMeals , meal -> presenter.onMealClicked(meal), true);
+        moreMealAdapter = new MealAdapter( moreMeals, meal -> presenter.onMealClicked(meal), false);
+
+        recyclerViewDaily.setAdapter(dailyMealAdapter);
+        recyclerViewMoreMeals.setAdapter(moreMealAdapter);
+
+        MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
+        MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(getContext());
+        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource ,localDataSource);
+
+
+        presenter = new HomePresenter(this , repository);
+        presenter.loadDailyRecommendation();
+        presenter.loadMoreMeals();
+
         return view ;
+    }
+
+    @Override
+    public void showDailyRecommendation(List<Meal> meals) {
+        dailyMeals.clear();
+        dailyMeals.addAll(meals);
+        dailyMealAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void showMoreMeals(List<Meal> meals) {
+        moreMeals.clear();
+        moreMeals.addAll(meals);
+        moreMealAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    @Override
+    public void hideLoading() {
+        progressBar.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void navigateToMealDetails(Meal meal) {
+        Intent intent = new Intent(getActivity() , DishAllDetailedActivity.class);
+        intent.putExtra("MEAL_ID", meal.getIdMeal());
+        startActivity(intent);
+
     }
 }
