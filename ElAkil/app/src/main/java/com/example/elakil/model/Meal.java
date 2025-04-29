@@ -1,18 +1,51 @@
 package com.example.elakil.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @Entity(tableName = "meals")
 public class Meal {
+    @PrimaryKey
+    @NonNull
+    private String idMeal;
+    private String strMeal;
+    private String strMealThumb;
+    private String strArea;
+    private String strInstruction;
+    private String strYoutube;
+    private boolean isFavorite ;
+
+    @Ignore
+    private List<String> ingredients ;
+    @Ignore
+    private List<String> measurements ;
+
+    public Meal() {}
+
+    public Meal(@NonNull String idMeal, String strMeal, String strMealThumb, String strArea, String strInstruction, String strYoutube, boolean isFavorite, List<String> ingredients, List<String> measurements) {
+        this.idMeal = idMeal;
+        this.strMeal = strMeal;
+        this.strMealThumb = strMealThumb;
+        this.strArea = strArea;
+        this.strInstruction = strInstruction;
+        this.strYoutube = strYoutube;
+        this.isFavorite = isFavorite;
+        this.ingredients = ingredients;
+        this.measurements = measurements;
+    }
+
+    @NonNull
     public String getIdMeal() {
         return idMeal;
     }
 
-    public void setIdMeal(String idMeal) {
+    public void setIdMeal(@NonNull String idMeal) {
         this.idMeal = idMeal;
     }
 
@@ -80,19 +113,7 @@ public class Meal {
         this.measurements = measurements;
     }
 
-    @PrimaryKey
-    private String idMeal;
-    private String strMeal;
-    private String strMealThumb;
-    private String strArea;
-    private String strInstruction;
-    private String strYoutube;
-    private boolean isFavorite ;
 
-    @Ignore
-    private List<String> ingredients ;
-    @Ignore
-    private List<String> measurements ;
 
 
 

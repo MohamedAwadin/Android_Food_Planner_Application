@@ -15,8 +15,8 @@ public interface HomeContract {
     }
 
     interface Presenter{
-        void loadDailyRecommendation(List<Meal> meals);
-        void loadMoreMeals(List<Meal> meals);
+        void loadDailyRecommendation();
+        void loadMoreMeals();
         void onMealClicked(Meal meal);
     }
 }

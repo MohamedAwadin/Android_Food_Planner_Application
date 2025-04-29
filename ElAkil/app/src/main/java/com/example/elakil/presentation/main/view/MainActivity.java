@@ -1,6 +1,7 @@
 package com.example.elakil.presentation.main.view;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,9 @@ import com.example.elakil.presentation.main.presenter.MainPresenter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View{
+
+
+    private long pressedTime;
 
     private BottomNavigationView bottomNavigationView;
 
@@ -52,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 presenter.navigateToProfile();
                 return true ;
             }
-
             else {
                 return false ;
             }
@@ -74,6 +77,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
+        //presenter.navigateToHome();
+        if (pressedTime + 2000 > System.currentTimeMillis()) {
+
+            super.onBackPressed();
+            finish();
+        } else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+
+
+        }
+        pressedTime = System.currentTimeMillis();
+
     }
 }
