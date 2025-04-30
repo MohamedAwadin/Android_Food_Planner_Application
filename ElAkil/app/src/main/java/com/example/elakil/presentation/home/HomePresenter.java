@@ -2,9 +2,7 @@ package com.example.elakil.presentation.home;
 
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.model.Meal;
-import com.example.elakil.model.MealResponse;
-
-import java.util.List;
+import com.example.elakil.model.MealListResponse;
 
 public class HomePresenter implements HomeContract.Presenter{
 
@@ -19,9 +17,9 @@ public class HomePresenter implements HomeContract.Presenter{
     @Override
     public void loadDailyRecommendation() {
         view.showLoading();
-        repository.getRandomMeal(new MealsRepository.NetworkCallback() {
+        repository.getRandomMeal(new MealsRepository.NetworkCallback<MealListResponse>() {
             @Override
-            public void onSuccess(MealResponse response) {
+            public void onSuccess(MealListResponse response) {
                 view.hideLoading();
                 if (response != null && response.getMeals() != null){
                     view.showDailyRecommendation(response.getMeals());
@@ -44,9 +42,9 @@ public class HomePresenter implements HomeContract.Presenter{
     @Override
     public void loadMoreMeals() {
         view.showLoading();
-        repository.filterByCategory("Dessert", new MealsRepository.NetworkCallback() {
+        repository.filterByCategory("Dessert", new MealsRepository.NetworkCallback<MealListResponse>() {
             @Override
-            public void onSuccess(MealResponse response) {
+            public void onSuccess(MealListResponse response) {
                 view.hideLoading();
                 if (response != null && response.getMeals() != null){
                     view.showMoreMeals(response.getMeals());

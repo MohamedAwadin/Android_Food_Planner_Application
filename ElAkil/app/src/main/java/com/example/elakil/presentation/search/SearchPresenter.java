@@ -2,10 +2,12 @@ package com.example.elakil.presentation.search;
 
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.model.Category;
+import com.example.elakil.model.CategoryListResponse;
 import com.example.elakil.model.Country;
+import com.example.elakil.model.CountryListResponse;
 import com.example.elakil.model.FilterItem;
 import com.example.elakil.model.Ingredient;
-import com.example.elakil.model.MealResponse;
+import com.example.elakil.model.IngredientListResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +30,9 @@ public class SearchPresenter implements SearchContract.Presenter{
     public void loadFilters() {
         view.showLoading();
 
-        repository.getCountries(new MealsRepository.NetworkCallback() {
+        repository.getCountries(new MealsRepository.NetworkCallback<CountryListResponse>() {
             @Override
-            public void onSuccess(MealResponse response) {
+            public void onSuccess(CountryListResponse response) {
                 if (response != null && response.getCountries() != null){
                     allAreas.clear();
                     List<String> areaNames = new ArrayList<>();
@@ -56,9 +58,9 @@ public class SearchPresenter implements SearchContract.Presenter{
             }
         });
 
-        repository.getCategories(new MealsRepository.NetworkCallback() {
+        repository.getCategories(new MealsRepository.NetworkCallback<CategoryListResponse>() {
             @Override
-            public void onSuccess(MealResponse response) {
+            public void onSuccess(CategoryListResponse response) {
                 if (response != null && response.getCategories() != null){
                     allCategories.clear();
                     List<String> categoryNames = new ArrayList<>();
@@ -85,9 +87,9 @@ public class SearchPresenter implements SearchContract.Presenter{
             }
         });
 
-        repository.getIngredients(new MealsRepository.NetworkCallback() {
+        repository.getIngredients(new MealsRepository.NetworkCallback<IngredientListResponse>() {
             @Override
-            public void onSuccess(MealResponse response) {
+            public void onSuccess(IngredientListResponse response) {
                 if (response != null && response.getIngredients() != null){
                     allIngredients.clear();
                     List<String> ingredientNames = new ArrayList<>();

@@ -1,9 +1,8 @@
 package com.example.elakil.presentation.search;
 
-import com.airbnb.lottie.L;
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.model.Meal;
-import com.example.elakil.model.MealResponse;
+import com.example.elakil.model.MealListResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +24,9 @@ public class FilteredDishSearchPresenter implements FilteredDishSearchContract.P
     @Override
     public void loadDishes(String filterType, String filterValue) {
         view.showLoading();
-        MealsRepository.NetworkCallback callback = new MealsRepository.NetworkCallback() {
+        MealsRepository.NetworkCallback<MealListResponse> callback = new MealsRepository.NetworkCallback<MealListResponse>() {
             @Override
-            public void onSuccess(MealResponse response) {
+            public void onSuccess(MealListResponse response) {
                 view.hideLoading();
                 if (response != null && response.getMeals() != null){
                     allDishes.clear();

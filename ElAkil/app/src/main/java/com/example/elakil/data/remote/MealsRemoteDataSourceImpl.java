@@ -1,7 +1,10 @@
 package com.example.elakil.data.remote;
 
-import com.example.elakil.model.MealResponse;
 import com.example.elakil.data.MealsRepository.NetworkCallback;
+import com.example.elakil.model.CategoryListResponse;
+import com.example.elakil.model.CountryListResponse;
+import com.example.elakil.model.IngredientListResponse;
+import com.example.elakil.model.MealListResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,102 +33,193 @@ public class MealsRemoteDataSourceImpl implements MealsRemoteDataSource{
     }
 
     @Override
-    public void getRandomMeal(NetworkCallback callback) {
-        Call<MealResponse> call = apiService.getRandomMeal();
-        enqueueCall(call, callback);
-
-    }
-
-
-
-    @Override
-    public void searchMealsByName(String name, NetworkCallback callback) {
-        Call<MealResponse> call = apiService.searchMealsByName(name);
-        enqueueCall(call, callback);
-
-    }
-
-    @Override
-    public void filterByCategory(String category, NetworkCallback callback) {
-        Call<MealResponse> call = apiService.filterByCategory(category);
-        enqueueCall(call, callback);
-
-    }
-
-    @Override
-    public void filterByArea(String area, NetworkCallback callback) {
-        Call<MealResponse> call = apiService.filterByArea(area);
-        enqueueCall(call, callback);
-
-    }
-
-    @Override
-    public void filterByIngredient(String ingredient, NetworkCallback callback) {
-        Call<MealResponse> call = apiService.filterByIngredient(ingredient);
-        enqueueCall(call, callback);
-
-    }
-
-    @Override
-    public void getCategories(NetworkCallback callback) {
-        Call<MealResponse> call = apiService.getCategories();
-        enqueueCall(call, callback);
-
-    }
-
-    @Override
-    public void getCountries(NetworkCallback callback) {
-        Call<MealResponse> call = apiService.getCountries();
-        enqueueCall(call, callback);
-
-    }
-
-    @Override
-    public void getIngredients(NetworkCallback callback) {
-        apiService.getIngredients().enqueue(new Callback<MealResponse>() {
+    public void getRandomMeal(NetworkCallback<MealListResponse> callback) {
+        apiService.getRandomMeal().enqueue(new Callback<MealListResponse>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
                 if (response.isSuccessful()){
                     callback.onSuccess(response.body());
+                }else {
+                    callback.onFailure("Failed to fetch random meal");
                 }
-                else {
+            }
+
+            @Override
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+
+            }
+        });
+
+    }
+
+
+
+    @Override
+    public void searchMealsByName(String name, NetworkCallback<MealListResponse> callback) {
+        apiService.searchMealsByName(name).enqueue(new Callback<MealListResponse>() {
+            @Override
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to search meals");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+
+            }
+        });
+
+    }
+
+    @Override
+    public void filterByCategory(String category, NetworkCallback<MealListResponse> callback) {
+        apiService.filterByCategory(category).enqueue(new Callback<MealListResponse>() {
+            @Override
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to filter by category");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+
+            }
+        });
+
+    }
+
+    @Override
+    public void filterByArea(String area, NetworkCallback<MealListResponse> callback) {
+        apiService.filterByArea(area).enqueue(new Callback<MealListResponse>() {
+            @Override
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to filter by area");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+
+            }
+        });
+
+    }
+
+    @Override
+    public void filterByIngredient(String ingredient, NetworkCallback<MealListResponse> callback) {
+        apiService.filterByIngredient(ingredient).enqueue(new Callback<MealListResponse>() {
+            @Override
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to filter by ingredient");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+
+    }
+
+    @Override
+    public void getCategories(NetworkCallback<CategoryListResponse> callback) {
+        apiService.getCategories().enqueue(new Callback<CategoryListResponse>() {
+            @Override
+            public void onResponse(Call<CategoryListResponse> call, Response<CategoryListResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch categories");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryListResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+            }
+        });
+
+    }
+
+    @Override
+    public void getCountries(NetworkCallback<CountryListResponse> callback) {
+        apiService.getCountries().enqueue(new Callback<CountryListResponse>() {
+            @Override
+            public void onResponse(Call<CountryListResponse> call, Response<CountryListResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onFailure("Failed to fetch countries");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CountryListResponse> call, Throwable t) {
+                callback.onFailure(t.getMessage());
+
+            }
+        });
+
+    }
+
+    @Override
+    public void getIngredients(NetworkCallback<IngredientListResponse> callback) {
+        apiService.getIngredients().enqueue(new Callback<IngredientListResponse>() {
+            @Override
+            public void onResponse(Call<IngredientListResponse> call, Response<IngredientListResponse> response) {
+                if (response.isSuccessful()){
+                    callback.onSuccess(response.body());
+                }else {
                     callback.onFailure("Failed to fetch ingredients");
                 }
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
+            public void onFailure(Call<IngredientListResponse> call, Throwable t) {
                 callback.onFailure(t.getMessage());
 
             }
         });
+
 
     }
 
     @Override
-    public void getMealDetails(String mealId, NetworkCallback callback) {
-        Call<MealResponse> call = apiService.getMealDetails(mealId);
-        enqueueCall(call, callback);
-
-    }
-
-    private void enqueueCall(Call<MealResponse> call, NetworkCallback callback) {
-        call.enqueue(new Callback<MealResponse>() {
+    public void getMealDetails(String mealId, NetworkCallback<MealListResponse> callback) {
+        apiService.getMealDetails(mealId).enqueue(new Callback<MealListResponse>() {
             @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                if (response.isSuccessful() && response.body() != null){
+            public void onResponse(Call<MealListResponse> call, Response<MealListResponse> response) {
+                if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
-                }
-                else {
-                    callback.onFailure("Failed to Fetch Data");
+                } else {
+                    callback.onFailure("Failed to fetch meal details");
                 }
             }
 
             @Override
-            public void onFailure(Call<MealResponse> call, Throwable t) {
+            public void onFailure(Call<MealListResponse> call, Throwable t) {
                 callback.onFailure(t.getMessage());
 
             }
         });
+
     }
+
 }

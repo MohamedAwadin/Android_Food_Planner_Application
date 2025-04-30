@@ -6,7 +6,11 @@ import com.airbnb.lottie.L;
 import com.example.elakil.data.local.MealsLocalDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
+import com.example.elakil.model.CategoryListResponse;
+import com.example.elakil.model.CountryListResponse;
+import com.example.elakil.model.IngredientListResponse;
 import com.example.elakil.model.Meal;
+import com.example.elakil.model.MealListResponse;
 import com.example.elakil.model.WeeklyPlan;
 
 import java.util.List;
@@ -29,54 +33,54 @@ public class MealsRepositoryImpl implements MealsRepository{
     }
 
     @Override
-    public void getRandomMeal(NetworkCallback callback) {
+    public void getRandomMeal(NetworkCallback<MealListResponse> callback) {
         remoteDataSource.getRandomMeal(callback);
 
     }
 
     @Override
-    public void searchMealsByName(String name, NetworkCallback callback) {
+    public void searchMealsByName(String name, NetworkCallback<MealListResponse> callback) {
         remoteDataSource.searchMealsByName(name ,  callback);
 
     }
 
     @Override
-    public void filterByCategory(String category, NetworkCallback callback) {
+    public void filterByCategory(String category, NetworkCallback<MealListResponse> callback) {
         remoteDataSource.filterByCategory(category ,  callback);
 
     }
 
     @Override
-    public void filterByArea(String area, NetworkCallback callback) {
+    public void filterByArea(String area, NetworkCallback<MealListResponse> callback) {
         remoteDataSource.filterByArea(area ,  callback);
 
     }
 
     @Override
-    public void filterByIngredient(String ingredient, NetworkCallback callback) {
+    public void filterByIngredient(String ingredient, NetworkCallback<MealListResponse> callback) {
 
         remoteDataSource.filterByIngredient(ingredient , callback);
     }
 
     @Override
-    public void getCategories(NetworkCallback callback) {
+    public void getCategories(NetworkCallback<CategoryListResponse> callback) {
         remoteDataSource.getCategories( callback);
 
     }
 
     @Override
-    public void getCountries(NetworkCallback callback) {
+    public void getCountries(NetworkCallback<CountryListResponse> callback) {
         remoteDataSource.getCountries( callback);
 
     }
 
     @Override
-    public void getIngredients(NetworkCallback callback) {
+    public void getIngredients(NetworkCallback<IngredientListResponse> callback) {
         remoteDataSource.getIngredients(callback);
     }
 
     @Override
-    public void getMealDetails(String mealId, NetworkCallback callback) {
+    public void getMealDetails(String mealId, NetworkCallback<MealListResponse> callback) {
         remoteDataSource.getMealDetails(mealId ,  callback);
 
     }
