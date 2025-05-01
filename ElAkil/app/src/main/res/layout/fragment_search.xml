@@ -9,63 +9,85 @@
         android:id="@+id/editTextSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Search meals..."
-        android:textColor="@color/red"
-        android:fontFamily="@font/agbalumo"
+        android:hint="Search"
+        app:startIconDrawable = "@drawable/ic_search"
+        app:boxStrokeColor ="@color/red"
+        android:inputType="text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Spinner
-        android:id="@+id/spinnerFilter"
+    <LinearLayout
+        android:id="@+id/filterButtonsLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/editTextSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="16dp">
 
-    <Spinner
-        android:id="@+id/spinnerFilterValue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/spinnerFilter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        <Button
+            android:id="@+id/buttonCountry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Country"
+            android:fontFamily="@font/agbalumo"
+            android:textSize="10dp"
+            android:backgroundTint="@color/filter_button_background_color"
+            android:textColor="@color/button_text_color"
+            android:layout_marginEnd="8dp"/>
 
-    <Button
-        android:id="@+id/buttonSearch"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        android:fontFamily="@font/agbalumo"
-        android:backgroundTint="@color/button_background_color"
-        android:textColor="@color/button_text_color"
-        app:layout_constraintTop_toBottomOf="@id/spinnerFilterValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        <Button
+            android:id="@+id/buttonCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Category"
+            android:fontFamily="@font/agbalumo"
+            android:textSize="10dp"
+            android:backgroundTint="@color/filter_button_background_color"
+            android:textColor="@color/button_text_color"
+
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/buttonIngredient"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ingredient"
+            android:fontFamily="@font/agbalumo"
+            android:textSize="10dp"
+            android:backgroundTint="@color/filter_button_background_color"
+            android:textColor="@color/button_text_color"
+            android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSearchResults"
+        android:id="@+id/recyclerViewFilters"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/buttonSearch"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        app:layout_constraintTop_toBottomOf="@id/filterButtonsLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="16dp"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterButtonsLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

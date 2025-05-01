@@ -2,22 +2,25 @@ package com.example.elakil.data;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.elakil.data.remote.MealsRemoteDataSource;
+import com.example.elakil.model.CategoryListResponse;
+import com.example.elakil.model.CountryListResponse;
+import com.example.elakil.model.IngredientListResponse;
 import com.example.elakil.model.Meal;
-import com.example.elakil.model.MealResponse;
+import com.example.elakil.model.MealListResponse;
 import com.example.elakil.model.WeeklyPlan;
 
 import java.util.List;
 
 public interface MealsRepository {
-    void getRandomMeal(NetworkCallback callback);
-    void searchMealsByName(String name, NetworkCallback callback);
-    void filterByCategory(String category , NetworkCallback callback);
-    void filterByArea(String area , NetworkCallback callback);
-    void filterByIngredient(String ingredient , NetworkCallback callback);
-    void getCategories(NetworkCallback callback);
-    void getCountries(NetworkCallback callback);
-    void getMealDetails(String mealId, NetworkCallback callback);
+    void getRandomMeal(NetworkCallback<MealListResponse> callback);
+    void searchMealsByName(String name, NetworkCallback<MealListResponse> callback);
+    void filterByCategory(String category , NetworkCallback<MealListResponse> callback);
+    void filterByArea(String area , NetworkCallback<MealListResponse> callback);
+    void filterByIngredient(String ingredient , NetworkCallback<MealListResponse> callback);
+    void getCategories(NetworkCallback<CategoryListResponse> callback);
+    void getCountries(NetworkCallback<CountryListResponse> callback);
+    void getIngredients(NetworkCallback<IngredientListResponse> callback);
+    void getMealDetails(String mealId, NetworkCallback<MealListResponse> callback);
     void insertMeals(Meal meal , LocalCallback callback);
     void deleteMeals(Meal meal , LocalCallback callback);
 
@@ -29,8 +32,8 @@ public interface MealsRepository {
     LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate);
 
 
-    interface NetworkCallback{
-        void onSuccess(MealResponse response);
+    interface NetworkCallback<T>{
+        void onSuccess(T response);
         void onFailure(String errorMessage);
     }
     interface LocalCallback {
