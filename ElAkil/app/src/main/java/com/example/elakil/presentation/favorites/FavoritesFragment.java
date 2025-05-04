@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FavoritesFragment extends Fragment implements FavoritesContract.View {
+public class FavoritesFragment extends Fragment implements FavoritesContract.View , FavoriteMealAdapter.OnFavoriteMealClickListener{
 
     private TextView textViewEmpty ;
     private RecyclerView recyclerViewFavorites ;
