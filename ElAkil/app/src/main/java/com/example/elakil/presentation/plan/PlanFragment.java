@@ -22,7 +22,9 @@ import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
 import com.example.elakil.presentation.auth.view.SignUpActivity;
+import com.example.elakil.presentation.main.view.MainActivity;
 import com.example.elakil.presentation.mealdetails.DishAllDetailedActivity;
+import com.example.elakil.presentation.profile.ProfileFragment;
 import com.example.elakil.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
@@ -88,30 +90,32 @@ public class PlanFragment extends Fragment implements PlanContract.View{
 
     }
 
-    @Override
-    public void showGuestMessage() {
-        textViewEmpty.setText("Guest Mode: Plan feature not available");
-        textViewEmpty.setVisibility(View.VISIBLE);
-        recyclerViewPlan.setVisibility(View.GONE);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Plan feature not available, Do you want to sign up ?");
-        builder.setTitle("Guest Mode !");
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK" , (DialogInterface.OnClickListener) (dialog, which) ->{
-
-            Intent intent = new Intent(getActivity(), SignUpActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-
-
-        });
-        builder.setNegativeButton("No" , (DialogInterface.OnClickListener) (dialog , which)->{
-            dialog.cancel();
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-    }
+//    @Override
+//    public void showGuestMessage() {
+//        textViewEmpty.setText("Guest Mode: Plan feature not available");
+//        textViewEmpty.setVisibility(View.VISIBLE);
+//        recyclerViewPlan.setVisibility(View.GONE);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setMessage("Plan feature not available, Do you want to sign up ?");
+//        builder.setTitle("Guest Mode !");
+//        builder.setCancelable(false);
+//        builder.setPositiveButton("OK" , (DialogInterface.OnClickListener) (dialog, which) ->{
+//
+//            Intent intent = new Intent(getActivity(), SignUpActivity.class);
+//            startActivity(intent);
+//            if (getActivity() != null){
+//                getActivity().finish();
+//            }
+//
+//
+//        });
+//        builder.setNegativeButton("No" , (DialogInterface.OnClickListener) (dialog , which)->{
+//            dialog.cancel();
+//        });
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//
+//    }
 
     @Override
     public void navigateToMealDetails(Meal meal) {

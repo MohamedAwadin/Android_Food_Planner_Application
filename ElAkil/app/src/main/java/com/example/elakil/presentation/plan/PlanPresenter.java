@@ -27,10 +27,10 @@ public class PlanPresenter implements PlanContract.Presenter{
 
     @Override
     public void loadWeeklyPlan() {
-        if (sharedPreferencesUtils.isGuestMode()){
-            view.showGuestMessage();
-        }
-        else {
+//        if (sharedPreferencesUtils.isGuestMode()){
+//            view.showGuestMessage();
+//        }
+//        else {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -57,7 +57,7 @@ public class PlanPresenter implements PlanContract.Presenter{
                     view.showWeeklyPlan(new ArrayList<>(), new ArrayList<>());
                 }
             });
-        }
+        //}
 
     }
 

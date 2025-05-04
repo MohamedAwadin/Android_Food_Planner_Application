@@ -30,6 +30,7 @@ import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.IngredientItem;
 import com.example.elakil.model.Meal;
 import com.example.elakil.presentation.home.MealAdapter;
+import com.example.elakil.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,8 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
 
     private ExecutorService executorService;
     private Handler mainHandler ;
+
+    private SharedPreferencesUtils sharedPreferencesUtils ;
 
 
 
@@ -74,6 +77,7 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
 
         executorService = Executors.newSingleThreadExecutor();
         mainHandler = new Handler(Looper.getMainLooper());
+        sharedPreferencesUtils = new SharedPreferencesUtils(this);
 
 
         presenter = new DishAllDetailedPresenter(this , repository , executorService , mainHandler);
@@ -84,11 +88,18 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
         webViewVideo.getSettings().setJavaScriptEnabled(true);
         webViewVideo.setWebChromeClient(new WebChromeClient());
 
+        if (sharedPreferencesUtils.isGuestMode()){
+            buttonFavorite.setVisibility(View.GONE);
+        } else {
+            buttonFavorite.setVisibility(View.VISIBLE);
+            buttonFavorite.setOnClickListener(v -> presenter.toggleFavorite());
+        }
+
         String mealId = getIntent().getStringExtra("MEAL_ID");
         if (mealId != null){
             presenter.loadMealDetails(mealId);
         }
-        buttonFavorite.setOnClickListener(v -> presenter.toggleFavorite());
+
 
     }
 

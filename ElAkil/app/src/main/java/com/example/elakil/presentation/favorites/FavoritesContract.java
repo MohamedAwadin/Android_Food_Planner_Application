@@ -8,7 +8,7 @@ import java.util.List;
 public class FavoritesContract {
     interface View {
         void showFavoritesMeals(List<Meal> meals);
-        void showGuestMessage();
+        //void showGuestMessage();
         void navigateToMealDetails(Meal meal);
 
     }

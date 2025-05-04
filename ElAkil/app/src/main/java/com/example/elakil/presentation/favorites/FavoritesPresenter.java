@@ -33,16 +33,16 @@ public class FavoritesPresenter implements FavoritesContract.Presenter{
 
     @Override
     public void loadFavoriteMeals() {
-        if (sharedPreferencesUtils.isGuestMode()){
-            mainHandler.post(() -> view.showGuestMessage());
-        } else {
+//        if (sharedPreferencesUtils.isGuestMode()){
+//            mainHandler.post(() -> view.showGuestMessage());
+//        } else {
             executorService.execute(() -> {
                 List<Meal> meals = repository.getFavoriteMeals().getValue();
                 if (meals != null){
                     mainHandler.post(() -> view.showFavoritesMeals(meals));
                 }
             });
-        }
+        //}
     }
 
     @Override

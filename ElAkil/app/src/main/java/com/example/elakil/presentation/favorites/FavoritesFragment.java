@@ -106,29 +106,29 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
     }
 
-    @Override
-    public void showGuestMessage() {
-        textViewEmpty.setText("Guest Mode: Favorites feature not available");
-        textViewEmpty.setVisibility(View.VISIBLE);
-        recyclerViewFavorites.setVisibility(View.GONE);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Favorites feature not available, Do you want to sign up ?");
-        builder.setTitle("Guest Mode !");
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK" , (DialogInterface.OnClickListener) (dialog, which) ->{
-            Intent intent = new Intent(getActivity(), SignUpActivity.class);
-            startActivity(intent);
-            if (getActivity() != null){
-                getActivity().finish();
-            }
-        });
-        builder.setNegativeButton("No" , (DialogInterface.OnClickListener) (dialog , which)->{
-           dialog.cancel();
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-    }
+//    @Override
+//    public void showGuestMessage() {
+//        textViewEmpty.setText("Guest Mode: Favorites feature not available");
+//        textViewEmpty.setVisibility(View.VISIBLE);
+//        recyclerViewFavorites.setVisibility(View.GONE);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setMessage("Favorites feature not available, Do you want to sign up ?");
+//        builder.setTitle("Guest Mode !");
+//        builder.setCancelable(false);
+//        builder.setPositiveButton("OK" , (DialogInterface.OnClickListener) (dialog, which) ->{
+//            Intent intent = new Intent(getActivity(), SignUpActivity.class);
+//            startActivity(intent);
+//            if (getActivity() != null){
+//                getActivity().finish();
+//            }
+//        });
+//        builder.setNegativeButton("No" , (DialogInterface.OnClickListener) (dialog , which)->{
+//           dialog.cancel();
+//        });
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//
+//    }
 
     @Override
     public void navigateToMealDetails(Meal meal) {

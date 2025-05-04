@@ -9,7 +9,7 @@ public interface PlanContract {
     interface View{
         void showWeeklyPlan(List<Meal> meals , List<String> days);
 
-        void showGuestMessage();
+        //void showGuestMessage();
 
         void navigateToMealDetails(Meal meal);
 
