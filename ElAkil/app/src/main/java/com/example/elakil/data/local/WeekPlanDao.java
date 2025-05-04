@@ -1,0 +1,25 @@
+package com.example.elakil.data.local;
+
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+
+import com.example.elakil.model.WeeklyPlan;
+
+import java.util.List;
+
+@Dao
+public interface WeekPlanDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertWeeklyPlan(WeeklyPlan plan);
+
+    @Delete
+    void deleteWeeklyPlan(WeeklyPlan plan);
+
+    @Query("SELECT * FROM weekly_plans WHERE weekStartDate= :weekStartDate")
+    LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate);
+
+}

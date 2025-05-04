@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,10 +30,14 @@ import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.IngredientItem;
 import com.example.elakil.model.Meal;
+import com.example.elakil.model.WeeklyPlan;
 import com.example.elakil.presentation.home.MealAdapter;
 import com.example.elakil.utils.SharedPreferencesUtils;
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,7 +48,7 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
     private ImageView imageViewMeal , imageViewFlag ;
     private RecyclerView recyclerViewIngredients ;
     private WebView webViewVideo ;
-    private Button buttonFavorite ;
+    private Button buttonFavorite, buttonAddToPlan ;
     private DishAllDetailedContract.Presenter presenter;
     private IngredientAdapter ingredientAdapter;
     private ProgressBar progressBar;
@@ -53,6 +58,10 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
     private Handler mainHandler ;
 
     private SharedPreferencesUtils sharedPreferencesUtils ;
+
+    private Meal currentMeal ;
+
+    private MealsRepository repository ;
 
 
 
@@ -68,12 +77,13 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
         imageViewFlag = findViewById(R.id.imageViewFlag);
         recyclerViewIngredients = findViewById(R.id.recyclerViewIngredients);
         buttonFavorite = findViewById(R.id.buttonFavorite);
+        buttonAddToPlan = findViewById(R.id.buttonAddToPlan);
         webViewVideo = findViewById(R.id.webViewVideo);
         progressBar = findViewById(R.id.progressBar);
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(this);
-        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource);
+        repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource);
 
         executorService = Executors.newSingleThreadExecutor();
         mainHandler = new Handler(Looper.getMainLooper());
@@ -90,21 +100,61 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
 
         if (sharedPreferencesUtils.isGuestMode()){
             buttonFavorite.setVisibility(View.GONE);
+            buttonAddToPlan.setVisibility(View.GONE);
         } else {
             buttonFavorite.setVisibility(View.VISIBLE);
             buttonFavorite.setOnClickListener(v -> presenter.toggleFavorite());
+            buttonAddToPlan.setVisibility(View.VISIBLE);
+            buttonAddToPlan.setOnClickListener(v -> showWeekdayDialog());
         }
 
         String mealId = getIntent().getStringExtra("MEAL_ID");
         if (mealId != null){
             presenter.loadMealDetails(mealId);
         }
+    }
 
+    private void showWeekdayDialog(){
+        final String[] weekdays = {"Saturday" , "Sunday" , "Monday" , "Tuesday" , "Wednesday" , "Thursday" , "Friday"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select a Day for Your Week Plan");
+        builder.setItems(weekdays, ((dialog, which) -> {
+            String selectDay = weekdays[which];
+            if (currentMeal != null){
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+                calendar.set(Calendar.HOUR_OF_DAY , 0);
+                calendar.set(Calendar.MINUTE , 0);
+                calendar.set(Calendar.SECOND , 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                long weekStartDate = calendar.getTimeInMillis();
 
+                WeeklyPlan weeklyPlan = new WeeklyPlan();
+                weeklyPlan.setMealId(currentMeal.getIdMeal());
+                weeklyPlan.setDayOfWeek(selectDay);
+                weeklyPlan.setWeekStartDate(weekStartDate);
+
+                executorService.execute(() -> {
+                    repository.insertWeeklyPlan(weeklyPlan , success -> {
+                        mainHandler.post(() -> {
+                            if (success){
+                                Toast.makeText(DishAllDetailedActivity.this , "Added to" + selectDay + "plan" , Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(DishAllDetailedActivity.this , "Failed To add to plan" , Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    });
+                });
+            }
+        }));
+        builder.setNegativeButton("Cancel", ((dialog, which) -> dialog.dismiss()));
+        builder.show();
     }
 
     @Override
     public void showMealDetails(Meal meal) {
+        this.currentMeal = meal;
         textViewMealName.setText(meal.getStrMeal());
         Glide.with(this).load(meal.getStrMealThumb()).into(imageViewMeal);
 

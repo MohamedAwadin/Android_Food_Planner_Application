@@ -11,8 +11,8 @@ import com.example.elakil.model.WeeklyPlan;
 
 @Database(entities = {Meal.class, WeeklyPlan.class}, version = 1 , exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-
     public abstract MealDao mealDao();
+    public abstract WeekPlanDao weekPlanDao();
     private static volatile AppDatabase INSTANCE ;
 
     public static AppDatabase getINSTANCE(Context context) {

@@ -16,10 +16,13 @@ import java.util.concurrent.Executors;
 public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
     private static MealsLocalDataSourceImpl instance = null ;
     private MealDao mealDao ;
+    private WeekPlanDao weekPlanDao ;
     private ExecutorService executorService ;
 
     public MealsLocalDataSourceImpl(Context context) {
-        mealDao = AppDatabase.getINSTANCE(context).mealDao();
+        AppDatabase database = AppDatabase.getINSTANCE(context);
+        mealDao = database.mealDao();
+        weekPlanDao = database.weekPlanDao();
         executorService = Executors.newSingleThreadExecutor();
     }
 
@@ -61,7 +64,7 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
     @Override
     public void insertWeeklyPlan(WeeklyPlan plan, MealsRepository.LocalCallback callback) {
         executorService.execute(() -> {
-            mealDao.insertWeeklyPlan(plan);
+            weekPlanDao.insertWeeklyPlan(plan);
             callback.onComplete(true);
         });
 
@@ -70,7 +73,7 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
     @Override
     public void deleteWeeklyPlan(WeeklyPlan plan, MealsRepository.LocalCallback callback) {
         executorService.execute(() -> {
-            mealDao.deleteWeeklyPlan(plan);
+            weekPlanDao.deleteWeeklyPlan(plan);
             callback.onComplete(true);
         });
 
@@ -78,6 +81,6 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
 
     @Override
     public LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate) {
-        return mealDao.getWeeklyPlans(weekStartDate);
+        return weekPlanDao.getWeeklyPlans(weekStartDate);
     }
 }

@@ -28,12 +28,12 @@
 
         <TextView
             android:id="@+id/textViewMealName"
-            android:fontFamily="@font/agbalumo"
-            android:textColor="@color/red"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:fontFamily="@font/agbalumo"
+            android:textColor="@color/red"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/imageViewMeal"
@@ -85,8 +85,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Ingredients"
             android:fontFamily="@font/agbalumo"
+            android:text="Ingredients"
             android:textColor="@color/red"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -126,8 +126,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:textSize="16sp"
             android:fontFamily="casual"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/webViewVideo"
             app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End2"
@@ -139,7 +139,7 @@
             android:layout_width="0dp"
             android:layout_height="202dp"
             android:layout_marginBottom="12dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonFavorite"
+            app:layout_constraintBottom_toTopOf="@+id/buttonAddToPlan"
             app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End2"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start2" />
@@ -148,12 +148,27 @@
             android:id="@+id/buttonFavorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Add to Favorites"
             android:backgroundTint="@color/button_background_color"
+            android:text="Add to Favorites"
+            android:textColor="@color/button_text_color"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewMeal"
+            app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End2"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start2"
+            app:layout_constraintTop_toTopOf="@+id/imageViewMeal"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/buttonAddToPlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/button_background_color"
+            android:text="Add to Week Plan"
             android:textColor="@color/button_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End2"
+            app:layout_constraintHorizontal_bias="0.53"
             app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start2" />
 
         <ProgressBar
@@ -161,5 +176,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.example.elakil.data.local.MealsLocalDataSourceImpl;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
+import com.example.elakil.model.WeeklyPlan;
 import com.example.elakil.presentation.auth.view.SignUpActivity;
 import com.example.elakil.presentation.main.view.MainActivity;
 import com.example.elakil.presentation.mealdetails.DishAllDetailedActivity;
@@ -28,10 +30,11 @@ import com.example.elakil.presentation.profile.ProfileFragment;
 import com.example.elakil.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
-public class PlanFragment extends Fragment implements PlanContract.View{
+public class PlanFragment extends Fragment implements PlanContract.View, PlanMealAdapter.OnPlanMealClickListener{
 
     private TextView textViewEmpty ;
     private RecyclerView recyclerViewPlan ;
@@ -40,6 +43,11 @@ public class PlanFragment extends Fragment implements PlanContract.View{
     private List<Meal> plannedMeals;
     private List<String> days ;
     private PlanContract.Presenter presenter;
+
+    private MealsRepository repository ;
+    private SharedPreferencesUtils sharedPreferencesUtils;
+
+
 
 
     @Override
@@ -54,27 +62,52 @@ public class PlanFragment extends Fragment implements PlanContract.View{
         plannedMeals = new ArrayList<>();
         days = new ArrayList<>();
 
-        planAdapter = new PlanMealAdapter(plannedMeals , days , meal -> presenter.onMealClicked(meal));
+        planAdapter = new PlanMealAdapter(plannedMeals , days , this);
         recyclerViewPlan.setAdapter(planAdapter);
 
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(getContext());
-        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource);
+        repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource);
+        sharedPreferencesUtils = new SharedPreferencesUtils(getContext());
 
         presenter = new PlanPresenter(this , repository , new SharedPreferencesUtils(getContext()));
-        presenter.loadWeeklyPlan();
+        //presenter.loadWeeklyPlan();
+
+        observeWeeklyPlan();
 
         return view;
     }
 
+    private void observeWeeklyPlan(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        calendar.set(Calendar.HOUR_OF_DAY , 0);
+        calendar.set(Calendar.MINUTE , 0);
+        calendar.set(Calendar.SECOND , 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long weekStartDate = calendar.getTimeInMillis();
 
-
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//    }
+        repository.getWeeklyPlans(weekStartDate).observe(getViewLifecycleOwner(), new Observer<List<WeeklyPlan>>() {
+            @Override
+            public void onChanged(List<WeeklyPlan> weeklyPlans) {
+                plannedMeals.clear();
+                days.clear();
+                if (weeklyPlans != null &&!weeklyPlans.isEmpty()){
+                    for (WeeklyPlan plan : weeklyPlans){
+                        Meal meal = repository.getMealById(plan.getMealId());
+                        if (meal != null){
+                            plannedMeals.add(meal);
+                            days.add(plan.getDayOfWeek());
+                        }
+                    }
+                }
+                planAdapter.notifyDataSetChanged();
+                textViewEmpty.setVisibility(plannedMeals.isEmpty() ? View.VISIBLE : View.GONE);
+                recyclerViewPlan.setVisibility(plannedMeals.isEmpty() ? View.GONE : View.VISIBLE);
+            }
+        });
+    }
 
 
 
@@ -90,38 +123,18 @@ public class PlanFragment extends Fragment implements PlanContract.View{
 
     }
 
-//    @Override
-//    public void showGuestMessage() {
-//        textViewEmpty.setText("Guest Mode: Plan feature not available");
-//        textViewEmpty.setVisibility(View.VISIBLE);
-//        recyclerViewPlan.setVisibility(View.GONE);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        builder.setMessage("Plan feature not available, Do you want to sign up ?");
-//        builder.setTitle("Guest Mode !");
-//        builder.setCancelable(false);
-//        builder.setPositiveButton("OK" , (DialogInterface.OnClickListener) (dialog, which) ->{
-//
-//            Intent intent = new Intent(getActivity(), SignUpActivity.class);
-//            startActivity(intent);
-//            if (getActivity() != null){
-//                getActivity().finish();
-//            }
-//
-//
-//        });
-//        builder.setNegativeButton("No" , (DialogInterface.OnClickListener) (dialog , which)->{
-//            dialog.cancel();
-//        });
-//        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//
-//    }
+
 
     @Override
     public void navigateToMealDetails(Meal meal) {
         Intent intent = new Intent(getActivity(), DishAllDetailedActivity.class);
         intent.putExtra("MEAL_ID", meal.getIdMeal());
         startActivity(intent);
+    }
+
+    @Override
+    public void OnMealClick(Meal meal) {
+        presenter.onMealClicked(meal);
 
     }
 }

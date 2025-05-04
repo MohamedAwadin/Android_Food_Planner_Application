@@ -18,4 +18,7 @@ public interface MealsLocalDataSource {
     void deleteWeeklyPlan(WeeklyPlan plan , LocalCallback callback);
     LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate);
 
+    
+
+
 }
