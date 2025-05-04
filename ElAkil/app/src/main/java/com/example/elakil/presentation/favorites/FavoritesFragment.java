@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -50,18 +51,7 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         recyclerViewFavorites = view.findViewById(R.id.recyclerViewFavorites);
 
         favoriteMeals = new ArrayList<>();
-        favoriteAdapter = new FavoriteMealAdapter(favoriteMeals, new FavoriteMealAdapter.OnFavoriteMealClickListener() {
-            @Override
-            public void OnMealClick(Meal meal) {
-                presenter.onMealClicked(meal);
-            }
-
-            @Override
-            public void OnRemoveMeal(Meal meal) {
-                presenter.removeFromFavorites(meal);
-
-            }
-        });
+        favoriteAdapter = new FavoriteMealAdapter(favoriteMeals, this) ;
         recyclerViewFavorites.setAdapter(favoriteAdapter);
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
@@ -70,13 +60,46 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
         presenter = new FavoritesPresenter(this , repository , new SharedPreferencesUtils(getContext()));
         presenter.loadFavoriteMeals();
+
+
+
+        repository.getFavoriteMeals().observe(getViewLifecycleOwner(), new Observer<List<Meal>>() {
+            @Override
+            public void onChanged(List<Meal> meals) {
+                if (meals == null || meals.isEmpty()){
+                    favoriteMeals.clear();
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                    recyclerViewFavorites.setVisibility(View.GONE);
+                }
+                else {
+                    favoriteMeals.clear();
+                    for (Meal meal : meals){
+                        if (meal.isFavorite()){
+                            favoriteMeals.add(meal);
+                        }
+                    }
+                    favoriteAdapter.notifyDataSetChanged();
+                    textViewEmpty.setVisibility(View.GONE);
+                    recyclerViewFavorites.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         return  view;
     }
+
+
 
     @Override
     public void showFavoritesMeals(List<Meal> meals) {
         favoriteMeals.clear();
-        favoriteMeals.addAll(meals);
+
+        for (Meal meal : meals){
+            if (meal.isFavorite()){
+                favoriteMeals.add(meal);
+            }
+        }
+
         favoriteAdapter.notifyDataSetChanged();
         textViewEmpty.setVisibility(favoriteMeals.isEmpty() ? View.VISIBLE : View.GONE);
         recyclerViewFavorites.setVisibility(favoriteMeals.isEmpty() ? View.GONE : View.VISIBLE);
@@ -93,12 +116,11 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         builder.setTitle("Guest Mode !");
         builder.setCancelable(false);
         builder.setPositiveButton("OK" , (DialogInterface.OnClickListener) (dialog, which) ->{
-
             Intent intent = new Intent(getActivity(), SignUpActivity.class);
             startActivity(intent);
-            getActivity().finish();
-
-
+            if (getActivity() != null){
+                getActivity().finish();
+            }
         });
         builder.setNegativeButton("No" , (DialogInterface.OnClickListener) (dialog , which)->{
            dialog.cancel();
@@ -113,6 +135,18 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
         Intent intent = new Intent(getActivity(), DishAllDetailedActivity.class);
         intent.putExtra("MEAL_ID", meal.getIdMeal());
         startActivity(intent);
+
+    }
+
+    @Override
+    public void OnMealClick(Meal meal) {
+        presenter.onMealClicked(meal);
+
+    }
+
+    @Override
+    public void OnRemoveMeal(Meal meal) {
+        presenter.removeFromFavorites(meal);
 
     }
 }

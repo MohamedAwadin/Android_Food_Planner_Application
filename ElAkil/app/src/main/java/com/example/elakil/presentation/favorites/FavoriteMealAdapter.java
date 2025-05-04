@@ -57,7 +57,7 @@ public class FavoriteMealAdapter extends RecyclerView.Adapter<FavoriteMealAdapte
 
     @Override
     public int getItemCount() {
-        return favoriteMeals.size();
+        return favoriteMeals != null ? favoriteMeals.size() : 0;
     }
 
     public class FavoriteMealViewHolder extends RecyclerView.ViewHolder {
