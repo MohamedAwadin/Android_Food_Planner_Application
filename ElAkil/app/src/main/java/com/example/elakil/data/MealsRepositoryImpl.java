@@ -123,4 +123,9 @@ public class MealsRepositoryImpl implements MealsRepository{
     public LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate) {
         return localDataSource.getWeeklyPlans(weekStartDate);
     }
+
+    @Override
+    public LiveData<Meal> getMealByIdLiveData(String mealId) {
+        return localDataSource.getMealByIdLiveData(mealId);
+    }
 }

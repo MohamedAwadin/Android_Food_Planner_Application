@@ -39,6 +39,7 @@ import org.checkerframework.checker.units.qual.C;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -121,13 +122,15 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
         builder.setItems(weekdays, ((dialog, which) -> {
             String selectDay = weekdays[which];
             if (currentMeal != null){
-                Calendar calendar = Calendar.getInstance();
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
                 calendar.set(Calendar.HOUR_OF_DAY , 0);
                 calendar.set(Calendar.MINUTE , 0);
                 calendar.set(Calendar.SECOND , 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 long weekStartDate = calendar.getTimeInMillis();
+                System.out.println("Debug: Adding plan with weekStartDate = " + weekStartDate); // Debug log
 
                 WeeklyPlan weeklyPlan = new WeeklyPlan();
                 weeklyPlan.setMealId(currentMeal.getIdMeal());
@@ -135,14 +138,15 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
                 weeklyPlan.setWeekStartDate(weekStartDate);
 
                 executorService.execute(() -> {
-                    repository.insertWeeklyPlan(weeklyPlan , success -> {
-                        mainHandler.post(() -> {
-                            if (success){
-                                Toast.makeText(DishAllDetailedActivity.this , "Added to" + selectDay + "plan" , Toast.LENGTH_LONG).show();
-                            }
-                            else {
-                                Toast.makeText(DishAllDetailedActivity.this , "Failed To add to plan" , Toast.LENGTH_LONG).show();
-                            }
+                    repository.insertMeals(currentMeal, success -> {
+                        repository.insertWeeklyPlan(weeklyPlan, planSuccess -> {
+                            mainHandler.post(() -> {
+                                if (planSuccess) {
+                                    Toast.makeText(DishAllDetailedActivity.this, "Added to " + selectDay + "'s plan", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(DishAllDetailedActivity.this, "Failed to add to plan", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         });
                     });
                 });

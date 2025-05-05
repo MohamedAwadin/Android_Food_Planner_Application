@@ -41,23 +41,28 @@ public class DishAllDetailedPresenter implements DishAllDetailedContract.Present
         repository.getMealDetails(mealId, new MealsRepository.NetworkCallback<MealListResponse>() {
             @Override
             public void onSuccess(MealListResponse response) {
-                view.hideLoading();
-                if (response != null && response.getMeals() != null && !response.getMeals().isEmpty()){
+                if (response != null && response.getMeals() != null && !response.getMeals().isEmpty()) {
                     currentMeal = response.getMeals().get(0);
-                    view.showMealDetails(currentMeal);
-                    List<IngredientItem> ingredients = extractIngredients(currentMeal);
-                    view.showIngredients(ingredients);
-                    checkFavoriteStatus();
-                }else {
-                    view.showError("Meal details not found");
+                    mainHandler.post(() -> {
+                        view.showMealDetails(currentMeal);
+                        view.showIngredients(extractIngredients(currentMeal));
+                        view.updateFavoriteButton(currentMeal.isFavorite());
+                        view.hideLoading();
+                    });
+                } else {
+                    mainHandler.post(() -> {
+                        view.showError("Meal details not found");
+                        view.hideLoading();
+                    });
                 }
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                view.hideLoading();
-                view.showError(errorMessage);
-
+                mainHandler.post(() -> {
+                    view.showError(errorMessage);
+                    view.hideLoading();
+                });
             }
         });
     }
@@ -97,30 +102,39 @@ public class DishAllDetailedPresenter implements DishAllDetailedContract.Present
 
     @Override
     public void toggleFavorite() {
-        if (currentMeal != null){
-            executorService.execute(() -> {
-                Meal existingMeal = repository.getMealById(currentMeal.getIdMeal());
-                if (existingMeal != null && existingMeal.isFavorite()){
-                    currentMeal.setFavorite(false);
-                    repository.deleteMeals(currentMeal, new MealsRepository.LocalCallback() {
-                        @Override
-                        public void onComplete(boolean success) {
-                            mainHandler.post(() -> view.updateFavoriteButton(false));
+        if (currentMeal == null) return;
+
+        boolean isCurrentlyFavorite = currentMeal.isFavorite();
+        currentMeal.setFavorite(!isCurrentlyFavorite);
+
+        executorService.execute(() -> {
+            if (currentMeal.isFavorite()) {
+                // Add to favorites
+                repository.insertMeals(currentMeal, success -> {
+                    mainHandler.post(() -> {
+                        if (success) {
+                            view.updateFavoriteButton(true);
+                        } else {
+                            currentMeal.setFavorite(false);
+                            view.updateFavoriteButton(false);
+                            view.showError("Failed to add to favorites");
                         }
                     });
-                } else {
-                    currentMeal.setFavorite(true);
-                    repository.insertMeals(currentMeal, new MealsRepository.LocalCallback() {
-                        @Override
-                        public void onComplete(boolean success) {
-                            mainHandler.post(() -> view.updateFavoriteButton(true));
+                });
+            } else {
+                // Remove from favorites
+                repository.deleteMeals(currentMeal, success -> {
+                    mainHandler.post(() -> {
+                        if (success) {
+                            view.updateFavoriteButton(false);
+                        } else {
+                            currentMeal.setFavorite(true);
+                            view.updateFavoriteButton(true);
+                            view.showError("Failed to remove from favorites");
                         }
                     });
-                }
-
-            });
-
-        }
-
+                });
+            }
+        });
     }
 }

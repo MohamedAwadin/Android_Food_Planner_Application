@@ -3,6 +3,7 @@ package com.example.elakil.data.local;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.elakil.data.MealsRepository.LocalCallback;
 import com.example.elakil.data.MealsRepository;
@@ -82,5 +83,15 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
     @Override
     public LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate) {
         return weekPlanDao.getWeeklyPlans(weekStartDate);
+    }
+
+    @Override
+    public LiveData<Meal> getMealByIdLiveData(String mealId) {
+        MutableLiveData<Meal> liveData = new MutableLiveData<>();
+        executorService.execute(() -> {
+            Meal meal = mealDao.getMealByid(mealId);
+            liveData.postValue(meal);
+        });
+        return liveData;
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +32,10 @@ import com.example.elakil.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 
 public class PlanFragment extends Fragment implements PlanContract.View, PlanMealAdapter.OnPlanMealClickListener{
@@ -80,31 +84,54 @@ public class PlanFragment extends Fragment implements PlanContract.View, PlanMea
     }
 
     private void observeWeeklyPlan(){
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         calendar.set(Calendar.HOUR_OF_DAY , 0);
         calendar.set(Calendar.MINUTE , 0);
         calendar.set(Calendar.SECOND , 0);
         calendar.set(Calendar.MILLISECOND, 0);
         long weekStartDate = calendar.getTimeInMillis();
+        System.out.println("Debug: Current weekStartDate = " + weekStartDate); // Debug log
 
         repository.getWeeklyPlans(weekStartDate).observe(getViewLifecycleOwner(), new Observer<List<WeeklyPlan>>() {
+            private Map<String , LiveData<Meal>> mealLiveDataMap = new HashMap<>();
+            private int pendingMeals = 0;
             @Override
             public void onChanged(List<WeeklyPlan> weeklyPlans) {
                 plannedMeals.clear();
                 days.clear();
                 if (weeklyPlans != null &&!weeklyPlans.isEmpty()){
+                    pendingMeals = weeklyPlans.size();
                     for (WeeklyPlan plan : weeklyPlans){
-                        Meal meal = repository.getMealById(plan.getMealId());
-                        if (meal != null){
-                            plannedMeals.add(meal);
-                            days.add(plan.getDayOfWeek());
-                        }
+                        System.out.println("Debug: Processing plan - mealId: " + plan.getMealId() + ", day: " + plan.getDayOfWeek() + ", weekStartDate: " + plan.getWeekStartDate()); // Debug log
+                        LiveData<Meal> mealLiveData = repository.getMealByIdLiveData(plan.getMealId());
+                        mealLiveDataMap.put(plan.getMealId(), mealLiveData);
+                        final String day = plan.getDayOfWeek();
+                        mealLiveData.observe(getViewLifecycleOwner() , meal -> {
+                            if (meal != null){
+                                System.out.println("Debug: Found meal - id: " + meal.getIdMeal() + ", name: " + meal.getStrMeal()); // Debug log
+                                plannedMeals.add(meal);
+                                days.add(plan.getDayOfWeek());
+
+                            }else {
+                                System.out.println("Debug: Meal not found for mealId: " + plan.getMealId()); // Debug log
+                            }
+                            pendingMeals--;
+                            if (pendingMeals == 0) {
+                                planAdapter.notifyDataSetChanged();
+                                textViewEmpty.setVisibility(plannedMeals.isEmpty() ? View.VISIBLE : View.GONE);
+                                recyclerViewPlan.setVisibility(plannedMeals.isEmpty() ? View.GONE : View.VISIBLE);
+                            }
+
+                        });
+
                     }
+                } else {
+                    textViewEmpty.setVisibility(View.VISIBLE);
+                    recyclerViewPlan.setVisibility(View.GONE);
+                    System.out.println("Debug: No weekly plans found for weekStartDate: " + weekStartDate); // Debug log
                 }
-                planAdapter.notifyDataSetChanged();
-                textViewEmpty.setVisibility(plannedMeals.isEmpty() ? View.VISIBLE : View.GONE);
-                recyclerViewPlan.setVisibility(plannedMeals.isEmpty() ? View.GONE : View.VISIBLE);
             }
         });
     }
