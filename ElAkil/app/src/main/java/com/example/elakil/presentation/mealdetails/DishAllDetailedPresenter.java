@@ -38,33 +38,55 @@ public class DishAllDetailedPresenter implements DishAllDetailedContract.Present
     @Override
     public void loadMealDetails(String mealId) {
         view.showLoading();
-        repository.getMealDetails(mealId, new MealsRepository.NetworkCallback<MealListResponse>() {
-            @Override
-            public void onSuccess(MealListResponse response) {
-                if (response != null && response.getMeals() != null && !response.getMeals().isEmpty()) {
-                    currentMeal = response.getMeals().get(0);
-                    mainHandler.post(() -> {
-                        view.showMealDetails(currentMeal);
-                        view.showIngredients(extractIngredients(currentMeal));
-                        view.updateFavoriteButton(currentMeal.isFavorite());
-                        view.hideLoading();
-                    });
-                } else {
-                    mainHandler.post(() -> {
-                        view.showError("Meal details not found");
-                        view.hideLoading();
-                    });
-                }
-            }
 
-            @Override
-            public void onFailure(String errorMessage) {
+        executorService.execute(() -> {
+            Meal localMeal = repository.getMealById(mealId);
+            if (localMeal != null){
+                currentMeal = localMeal;
                 mainHandler.post(() -> {
-                    view.showError(errorMessage);
-                    view.hideLoading();
+                   view.showMealDetails(currentMeal);
+                   view.showIngredients(extractIngredients(currentMeal));
+                   view.updateFavoriteButton(currentMeal.isFavorite());
+                   view.hideLoading();
+                });
+            } else {
+                repository.getMealDetails(mealId, new MealsRepository.NetworkCallback<MealListResponse>() {
+                    @Override
+                    public void onSuccess(MealListResponse response) {
+                        if (response != null && response.getMeals() != null && !response.getMeals().isEmpty()){
+                            currentMeal = response.getMeals().get(0);
+                            executorService.execute(() -> {
+                                repository.insertMeals(currentMeal , success -> {
+                                    if (!success){
+                                        mainHandler.post(() -> view.showError("Failed to save meal locally"));
+                                    }
+                                });
+                            });
+                            mainHandler.post(() -> {
+                                view.showMealDetails(currentMeal);
+                                view.showIngredients(extractIngredients(currentMeal));
+                                view.updateFavoriteButton(currentMeal.isFavorite());
+                                view.hideLoading();
+                            });
+                        } else {
+                            mainHandler.post(() -> {
+                                view.showError("Meal details not found ");
+                                view.hideLoading();
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        mainHandler.post(() -> {
+                            view.showError(errorMessage);
+                            view.hideLoading();
+                        });
+                    }
                 });
             }
         });
+
     }
 
     private List<IngredientItem> extractIngredients(Meal meal){

@@ -1,5 +1,7 @@
 package com.example.elakil.presentation.home;
 
+import android.widget.Toast;
+
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.model.Meal;
 import com.example.elakil.model.MealListResponse;
@@ -33,7 +35,6 @@ public class HomePresenter implements HomeContract.Presenter{
             public void onFailure(String errorMessage) {
                 view.hideLoading();;
                 view.showError(errorMessage);
-
             }
         });
 
