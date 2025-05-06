@@ -9,16 +9,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.elakil.R;
+import com.example.elakil.data.FirebaseSyncRepository;
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.data.MealsRepositoryImpl;
 import com.example.elakil.data.local.MealsLocalDataSource;
 import com.example.elakil.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
@@ -34,11 +37,13 @@ import java.util.List;
 
 public class FavoritesFragment extends Fragment implements FavoritesContract.View , FavoriteMealAdapter.OnFavoriteMealClickListener{
 
+    private static final String TAG = "FavoritesFragment" ;
     private TextView textViewEmpty ;
     private RecyclerView recyclerViewFavorites ;
     private FavoriteMealAdapter favoriteAdapter;
     private List<Meal> favoriteMeals ;
     private FavoritesContract.Presenter presenter ;
+    MealsRepository repository;
 
 
 
@@ -56,36 +61,57 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(getContext());
-        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource);
+        FirebaseDataSource firebaseDataSource = new FirebaseDataSource();
+        FirebaseSyncRepository firebaseSyncRepository = FirebaseSyncRepository.getInstance(firebaseDataSource);
+         repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource, firebaseSyncRepository);
 
         presenter = new FavoritesPresenter(this , repository , new SharedPreferencesUtils(getContext()));
-        presenter.loadFavoriteMeals();
+        //presenter.loadFavoriteMeals();
+
+        observeFavoriteMeals();
 
 
 
+//        repository.getFavoriteMeals().observe(getViewLifecycleOwner(), new Observer<List<Meal>>() {
+//            @Override
+//            public void onChanged(List<Meal> meals) {
+//                if (meals == null || meals.isEmpty()){
+//                    favoriteMeals.clear();
+//                    textViewEmpty.setVisibility(View.VISIBLE);
+//                    recyclerViewFavorites.setVisibility(View.GONE);
+//                }
+//                else {
+//                    favoriteMeals.clear();
+//                    for (Meal meal : meals){
+//                        if (meal.isFavorite()){
+//                            favoriteMeals.add(meal);
+//                        }
+//                    }
+//                    favoriteAdapter.notifyDataSetChanged();
+//                    textViewEmpty.setVisibility(View.GONE);
+//                    recyclerViewFavorites.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        });
+
+        return  view;
+    }
+
+    private void observeFavoriteMeals(){
         repository.getFavoriteMeals().observe(getViewLifecycleOwner(), new Observer<List<Meal>>() {
             @Override
             public void onChanged(List<Meal> meals) {
-                if (meals == null || meals.isEmpty()){
-                    favoriteMeals.clear();
-                    textViewEmpty.setVisibility(View.VISIBLE);
-                    recyclerViewFavorites.setVisibility(View.GONE);
+                favoriteMeals.clear();
+                if (meals != null && !meals.isEmpty()){
+                    favoriteMeals.addAll(meals);
+                    Log.d(TAG ,"Debug: Loaded " + meals.size() + " favorite meals offline" );
+
                 }
-                else {
-                    favoriteMeals.clear();
-                    for (Meal meal : meals){
-                        if (meal.isFavorite()){
-                            favoriteMeals.add(meal);
-                        }
-                    }
-                    favoriteAdapter.notifyDataSetChanged();
-                    textViewEmpty.setVisibility(View.GONE);
-                    recyclerViewFavorites.setVisibility(View.VISIBLE);
-                }
+                favoriteAdapter.notifyDataSetChanged();
+                textViewEmpty.setVisibility(favoriteMeals.isEmpty() ? View.VISIBLE : View.GONE);
+                recyclerViewFavorites.setVisibility(favoriteMeals.isEmpty() ? View.GONE : View.VISIBLE);
             }
         });
-
-        return  view;
     }
 
 
@@ -94,12 +120,12 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
     public void showFavoritesMeals(List<Meal> meals) {
         favoriteMeals.clear();
 
-        for (Meal meal : meals){
-            if (meal.isFavorite()){
-                favoriteMeals.add(meal);
-            }
-        }
-
+//        for (Meal meal : meals){
+//            if (meal.isFavorite()){
+//                favoriteMeals.add(meal);
+//            }
+//        }
+        favoriteMeals.addAll(meals);
         favoriteAdapter.notifyDataSetChanged();
         textViewEmpty.setVisibility(favoriteMeals.isEmpty() ? View.VISIBLE : View.GONE);
         recyclerViewFavorites.setVisibility(favoriteMeals.isEmpty() ? View.GONE : View.VISIBLE);

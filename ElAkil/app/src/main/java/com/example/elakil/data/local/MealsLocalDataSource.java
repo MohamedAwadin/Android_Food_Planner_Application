@@ -20,5 +20,7 @@ public interface MealsLocalDataSource {
 
     LiveData<Meal> getMealByIdLiveData(String mealId);
 
+    void clearAllData(LocalCallback callback);
+
 
 }

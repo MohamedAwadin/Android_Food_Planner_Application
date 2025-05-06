@@ -3,6 +3,7 @@ package com.example.elakil.data;
 import androidx.lifecycle.LiveData;
 
 import com.airbnb.lottie.L;
+import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.model.CategoryListResponse;
 import com.example.elakil.model.CountryListResponse;
 import com.example.elakil.model.IngredientListResponse;
@@ -33,6 +34,10 @@ public interface MealsRepository {
     LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate);
 
     LiveData<Meal> getMealByIdLiveData(String mealId);
+
+
+    void clearLocalData(LocalCallback callback);
+
 
 
     interface NetworkCallback<T>{

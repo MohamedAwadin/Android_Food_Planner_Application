@@ -3,6 +3,7 @@ package com.example.elakil.presentation.mealdetails;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -22,10 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.elakil.R;
+import com.example.elakil.data.FirebaseSyncRepository;
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.data.MealsRepositoryImpl;
 import com.example.elakil.data.local.MealsLocalDataSource;
 import com.example.elakil.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.IngredientItem;
@@ -44,6 +47,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class DishAllDetailedActivity extends AppCompatActivity implements DishAllDetailedContract.View{
+
+    private static final String TAG = "DishAllDetailedActivity";
 
     private TextView textViewMealName , textViewCountry , textViewSteps ;
     private ImageView imageViewMeal , imageViewFlag ;
@@ -84,7 +89,9 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(this);
-        repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource);
+        FirebaseDataSource firebaseDataSource = new FirebaseDataSource();
+        FirebaseSyncRepository firebaseSyncRepository = FirebaseSyncRepository.getInstance(firebaseDataSource);
+        repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource, firebaseSyncRepository);
 
         executorService = Executors.newSingleThreadExecutor();
         mainHandler = new Handler(Looper.getMainLooper());
@@ -130,7 +137,9 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
                 calendar.set(Calendar.SECOND , 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 long weekStartDate = calendar.getTimeInMillis();
-                System.out.println("Debug: Adding plan with weekStartDate = " + weekStartDate); // Debug log
+                //System.out.println("Debug: Adding plan with weekStartDate = " + weekStartDate); // Debug log
+                Log.d(TAG , "Debug: Adding plan with weekStartDate = " + weekStartDate);
+
 
                 WeeklyPlan weeklyPlan = new WeeklyPlan();
                 weeklyPlan.setMealId(currentMeal.getIdMeal());

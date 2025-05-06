@@ -26,14 +26,9 @@ public interface MealDao {
     @Query("SELECT * FROM meals WHERE idMeal = :mealId LIMIT 1")
     Meal getMealByid(String mealId);
 
-    @Insert
-    void insertWeeklyPlan(WeeklyPlan plan);
 
-    @Delete
-    void deleteWeeklyPlan(WeeklyPlan plan);
-
-    @Query("SELECT * FROM weekly_plans WHERE weekStartDate = :weekStartDate")
-    LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate );
+    @Query("DELETE FROM meals")
+    void clearMeals();
 
 
 

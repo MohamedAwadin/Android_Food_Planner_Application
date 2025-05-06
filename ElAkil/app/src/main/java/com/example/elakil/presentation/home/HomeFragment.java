@@ -13,10 +13,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.elakil.R;
+import com.example.elakil.data.FirebaseSyncRepository;
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.data.MealsRepositoryImpl;
 import com.example.elakil.data.local.MealsLocalDataSource;
 import com.example.elakil.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
@@ -64,7 +66,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(getContext());
-        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource ,localDataSource);
+        FirebaseDataSource firebaseDataSource = new FirebaseDataSource();
+        FirebaseSyncRepository firebaseSyncRepository = FirebaseSyncRepository.getInstance(firebaseDataSource);
+        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource, localDataSource, firebaseSyncRepository);
 
 
         presenter = new HomePresenter(this , repository);

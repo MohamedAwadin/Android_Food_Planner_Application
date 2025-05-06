@@ -10,10 +10,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.elakil.R;
+import com.example.elakil.data.FirebaseSyncRepository;
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.data.MealsRepositoryImpl;
 import com.example.elakil.data.local.MealsLocalDataSource;
 import com.example.elakil.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
@@ -40,7 +42,9 @@ public class FilteredDishSearchActivity extends AppCompatActivity implements Fil
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(this);
-        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource, localDataSource);
+        FirebaseDataSource firebaseDataSource = new FirebaseDataSource();
+        FirebaseSyncRepository firebaseSyncRepository = FirebaseSyncRepository.getInstance(firebaseDataSource);
+        MealsRepository repository = MealsRepositoryImpl.getInstance(remoteDataSource, localDataSource, firebaseSyncRepository);
 
         String filterType = getIntent().getStringExtra("FILTER_TYPE");
         String filterValue = getIntent().getStringExtra("FILTER_VALUE");

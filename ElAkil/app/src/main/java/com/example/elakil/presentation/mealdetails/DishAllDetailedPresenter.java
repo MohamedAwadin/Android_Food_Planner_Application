@@ -131,7 +131,7 @@ public class DishAllDetailedPresenter implements DishAllDetailedContract.Present
 
         executorService.execute(() -> {
             if (currentMeal.isFavorite()) {
-                // Add to favorites
+
                 repository.insertMeals(currentMeal, success -> {
                     mainHandler.post(() -> {
                         if (success) {

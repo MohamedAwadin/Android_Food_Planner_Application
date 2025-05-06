@@ -22,4 +22,7 @@ public interface WeekPlanDao {
     @Query("SELECT * FROM weekly_plans WHERE weekStartDate= :weekStartDate")
     LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate);
 
+    @Query("DELETE FROM weekly_plans")
+    void clearWeeklyPlans();
+
 }

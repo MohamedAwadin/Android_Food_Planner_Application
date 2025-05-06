@@ -94,4 +94,13 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
         });
         return liveData;
     }
+
+    @Override
+    public void clearAllData(LocalCallback callback) {
+        executorService.execute(() -> {
+            mealDao.clearMeals();
+            weekPlanDao.clearWeeklyPlans();
+            callback.onComplete(true);
+        });
+    }
 }

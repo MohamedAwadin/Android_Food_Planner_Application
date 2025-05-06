@@ -10,16 +10,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.elakil.R;
+import com.example.elakil.data.FirebaseSyncRepository;
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.data.MealsRepositoryImpl;
 import com.example.elakil.data.local.MealsLocalDataSource;
 import com.example.elakil.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
@@ -40,6 +43,8 @@ import java.util.TimeZone;
 
 public class PlanFragment extends Fragment implements PlanContract.View, PlanMealAdapter.OnPlanMealClickListener{
 
+
+    private static final String TAG = "PlanFragment" ;
     private TextView textViewEmpty ;
     private RecyclerView recyclerViewPlan ;
     private PlanMealAdapter planAdapter ;
@@ -72,7 +77,9 @@ public class PlanFragment extends Fragment implements PlanContract.View, PlanMea
 
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(getContext());
-        repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource);
+        FirebaseDataSource firebaseDataSource = new FirebaseDataSource();
+        FirebaseSyncRepository firebaseSyncRepository = FirebaseSyncRepository.getInstance(firebaseDataSource);
+        repository = MealsRepositoryImpl.getInstance(remoteDataSource , localDataSource, firebaseSyncRepository);
         sharedPreferencesUtils = new SharedPreferencesUtils(getContext());
 
         presenter = new PlanPresenter(this , repository , new SharedPreferencesUtils(getContext()));
@@ -92,7 +99,7 @@ public class PlanFragment extends Fragment implements PlanContract.View, PlanMea
         calendar.set(Calendar.SECOND , 0);
         calendar.set(Calendar.MILLISECOND, 0);
         long weekStartDate = calendar.getTimeInMillis();
-        System.out.println("Debug: Current weekStartDate = " + weekStartDate); // Debug log
+        Log.d(TAG,"Debug: Current weekStartDate = " + weekStartDate);
 
         repository.getWeeklyPlans(weekStartDate).observe(getViewLifecycleOwner(), new Observer<List<WeeklyPlan>>() {
             private Map<String , LiveData<Meal>> mealLiveDataMap = new HashMap<>();
@@ -104,18 +111,19 @@ public class PlanFragment extends Fragment implements PlanContract.View, PlanMea
                 if (weeklyPlans != null &&!weeklyPlans.isEmpty()){
                     pendingMeals = weeklyPlans.size();
                     for (WeeklyPlan plan : weeklyPlans){
-                        System.out.println("Debug: Processing plan - mealId: " + plan.getMealId() + ", day: " + plan.getDayOfWeek() + ", weekStartDate: " + plan.getWeekStartDate()); // Debug log
+                        Log.d(TAG,"Debug: Processing plan - mealId: " + plan.getMealId() + ", day: " + plan.getDayOfWeek() + ", weekStartDate: " + plan.getWeekStartDate());
                         LiveData<Meal> mealLiveData = repository.getMealByIdLiveData(plan.getMealId());
                         mealLiveDataMap.put(plan.getMealId(), mealLiveData);
                         final String day = plan.getDayOfWeek();
                         mealLiveData.observe(getViewLifecycleOwner() , meal -> {
                             if (meal != null){
-                                System.out.println("Debug: Found meal - id: " + meal.getIdMeal() + ", name: " + meal.getStrMeal()); // Debug log
+                                Log.d(TAG,"Debug: Found meal offline - id: " + meal.getIdMeal() + ", name: " + meal.getStrMeal());
                                 plannedMeals.add(meal);
-                                days.add(plan.getDayOfWeek());
+                                days.add(day);
 
                             }else {
-                                System.out.println("Debug: Meal not found for mealId: " + plan.getMealId()); // Debug log
+                                Log.d(TAG,"Debug: Meal not found for mealId: " + plan.getMealId());
+
                             }
                             pendingMeals--;
                             if (pendingMeals == 0) {
@@ -130,7 +138,7 @@ public class PlanFragment extends Fragment implements PlanContract.View, PlanMea
                 } else {
                     textViewEmpty.setVisibility(View.VISIBLE);
                     recyclerViewPlan.setVisibility(View.GONE);
-                    System.out.println("Debug: No weekly plans found for weekStartDate: " + weekStartDate); // Debug log
+                    Log.d(TAG,"Debug: No weekly plans found for weekStartDate: " + weekStartDate);
                 }
             }
         });

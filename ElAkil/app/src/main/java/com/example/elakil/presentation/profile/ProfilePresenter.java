@@ -1,5 +1,8 @@
 package com.example.elakil.presentation.profile;
 
+import android.util.Log;
+
+import com.example.elakil.data.FirebaseSyncRepository;
 import com.example.elakil.data.MealsRepository;
 import com.example.elakil.presentation.auth.presenter.AuthContract;
 import com.example.elakil.presentation.auth.presenter.AuthPresenter;
@@ -10,15 +13,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.ktx.Firebase;
 
 public class ProfilePresenter implements ProfileContract.Presenter{
+
+    private static final String TAG = "ProfilePresenter";
+
     private ProfileContract.View view;
     private MealsRepository repository;
+    private FirebaseSyncRepository firebaseSyncRepository;
     private SharedPreferencesUtils sharedPreferencesUtils;
     private FirebaseAuth firebaseAuth;
     private AuthPresenter authPresenter;
 
-    public ProfilePresenter(ProfileContract.View view, MealsRepository repository, SharedPreferencesUtils sharedPreferencesUtils) {
+    public ProfilePresenter(ProfileContract.View view, MealsRepository repository, SharedPreferencesUtils sharedPreferencesUtils, FirebaseSyncRepository firebaseSyncRepository) {
         this.view = view;
         this.repository = repository;
+        this.firebaseSyncRepository = firebaseSyncRepository ;
         this.sharedPreferencesUtils = sharedPreferencesUtils;
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.authPresenter = new AuthPresenter((AuthContract.LoginView) null , sharedPreferencesUtils);
@@ -43,8 +51,18 @@ public class ProfilePresenter implements ProfileContract.Presenter{
 
     @Override
     public void logout() {
-        authPresenter.logout();
-        view.navigateToLogin();
+        // Clear local database only
+        repository.clearLocalData(success -> {
+            if (success) {
+
+                Log.d(TAG , "Debug: Cleared local database on logout");
+            } else {
+
+                Log.d(TAG , "Debug: Failed to clear local database on logout");
+            }
+            authPresenter.logout();
+            view.navigateToLogin();
+        });
 
     }
 }
