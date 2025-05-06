@@ -106,6 +106,8 @@ public class FavoritesFragment extends Fragment implements FavoritesContract.Vie
                     favoriteMeals.addAll(meals);
                     Log.d(TAG ,"Debug: Loaded " + meals.size() + " favorite meals offline" );
 
+                } else {
+                    Log.d(TAG,"Debug: No favorite meals found");
                 }
                 favoriteAdapter.notifyDataSetChanged();
                 textViewEmpty.setVisibility(favoriteMeals.isEmpty() ? View.VISIBLE : View.GONE);

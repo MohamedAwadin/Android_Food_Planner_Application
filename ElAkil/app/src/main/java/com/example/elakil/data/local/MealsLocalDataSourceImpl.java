@@ -36,10 +36,27 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
 
     @Override
     public void insertMeal(Meal meal, LocalCallback callback) {
+//        executorService.execute(() -> {
+//            mealDao.insertMeal(meal);
+//            callback.onComplete(true);
+//        });
+
         executorService.execute(() -> {
-            mealDao.insertMeal(meal);
-            callback.onComplete(true);
+            try {
+                Meal existingMeal = mealDao.getMealByid(meal.getIdMeal());
+                if (existingMeal != null) {
+                    mealDao.updateMeal(meal); // Update existing meal
+                } else {
+                    mealDao.insertMeal(meal); // Insert new meal
+                }
+                callback.onComplete(true);
+                System.out.println("Debug: Inserted/Updated meal " + meal.getIdMeal() + " with isFavorite = " + meal.isFavorite());
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.onComplete(false);
+            }
         });
+
 
     }
 
