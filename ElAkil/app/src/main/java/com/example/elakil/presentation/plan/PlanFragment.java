@@ -172,4 +172,10 @@ public class PlanFragment extends Fragment implements PlanContract.View, PlanMea
         presenter.onMealClicked(meal);
 
     }
+
+    @Override
+    public void onRemoveFromPlan(Meal meal, String day) {
+        presenter.removeMealFromPlan(meal , day);
+
+    }
 }

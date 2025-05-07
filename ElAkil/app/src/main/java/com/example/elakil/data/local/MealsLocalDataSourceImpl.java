@@ -90,9 +90,22 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
 
     @Override
     public void deleteWeeklyPlan(WeeklyPlan plan, MealsRepository.LocalCallback callback) {
+//        executorService.execute(() -> {
+//            weekPlanDao.deleteWeeklyPlan(plan);
+//            callback.onComplete(true);
+//        });
+
         executorService.execute(() -> {
-            weekPlanDao.deleteWeeklyPlan(plan);
-            callback.onComplete(true);
+            try {
+                System.out.println("Debug: Attempting to delete weekly plan - mealId: " + plan.getMealId() + ", dayOfWeek: " + plan.getDayOfWeek() + ", weekStartDate: " + plan.getWeekStartDate());
+                weekPlanDao.deleteWeeklyPlanByDetails(plan.getMealId(), plan.getDayOfWeek(), plan.getWeekStartDate());
+                callback.onComplete(true);
+                System.out.println("Debug: Deleted weekly plan for meal " + plan.getMealId() + " on day " + plan.getDayOfWeek());
+            } catch (Exception e) {
+                e.printStackTrace();
+                callback.onComplete(false);
+                System.out.println("Debug: Failed to delete weekly plan for meal " + plan.getMealId() + ": " + e.getMessage());
+            }
         });
 
     }

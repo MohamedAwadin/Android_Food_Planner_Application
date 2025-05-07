@@ -3,6 +3,7 @@ package com.example.elakil.presentation.plan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class PlanMealAdapter extends RecyclerView.Adapter<PlanMealAdapter.PlanMe
 
     public interface OnPlanMealClickListener{
         void OnMealClick(Meal meal);
+        void onRemoveFromPlan(Meal meal , String day);
     }
 
     public PlanMealAdapter(List<Meal> plannedMeals, List<String> days, OnPlanMealClickListener listener) {
@@ -49,6 +51,7 @@ public class PlanMealAdapter extends RecyclerView.Adapter<PlanMealAdapter.PlanMe
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .into(holder.imageViewMeal);
         holder.itemView.setOnClickListener(v -> listener.OnMealClick(meal));
+        holder.buttonRemoveFromPlan.setOnClickListener(v -> listener.onRemoveFromPlan(meal , day));
 
     }
 
@@ -60,11 +63,14 @@ public class PlanMealAdapter extends RecyclerView.Adapter<PlanMealAdapter.PlanMe
     public class PlanMealViewHolder extends RecyclerView.ViewHolder {
         TextView textViewDay , textViewMealName ;
         ImageView imageViewMeal ;
+
+        Button buttonRemoveFromPlan ;
         public PlanMealViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewDay = itemView.findViewById(R.id.textViewDay);
             textViewMealName = itemView.findViewById(R.id.textViewMealName);
             imageViewMeal = itemView.findViewById(R.id.imageViewMeal);
+            buttonRemoveFromPlan = itemView.findViewById(R.id.buttonRemoveFromPlan);
         }
     }
 }

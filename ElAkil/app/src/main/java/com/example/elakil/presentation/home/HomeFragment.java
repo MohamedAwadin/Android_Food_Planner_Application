@@ -1,5 +1,7 @@
 package com.example.elakil.presentation.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,7 +24,10 @@ import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSource;
 import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
+import com.example.elakil.presentation.auth.view.SignUpActivity;
+import com.example.elakil.presentation.favorites.FavoritesFragment;
 import com.example.elakil.presentation.mealdetails.DishAllDetailedActivity;
+import com.example.elakil.presentation.plan.PlanFragment;
 
 import java.util.ArrayList;
 import java.util.List;

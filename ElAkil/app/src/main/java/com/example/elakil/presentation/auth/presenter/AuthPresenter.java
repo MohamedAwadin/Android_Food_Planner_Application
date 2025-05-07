@@ -129,11 +129,13 @@ public class AuthPresenter implements AuthContract.Presenter{
                     signUpView.hideLoding();
                     if (task.isSuccessful())
                     {
+                        System.out.println("Debug: Google Sign-Up successful");
                         sharedPreferencesUtils.setLoggedIn(true);
                         sharedPreferencesUtils.setGuestMode(false);
                         signUpView.navigateToMain();
                     }
                     else {
+                        System.out.println("Debug: Google Sign-Up failed: " + task.getException().getMessage());
                         signUpView.showError("Google Sign-Up Failed: " + task.getException().getMessage());
                     }
                 });

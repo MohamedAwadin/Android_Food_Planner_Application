@@ -20,5 +20,6 @@ public interface PlanContract {
     interface Presenter{
         void loadWeeklyPlan();
         void onMealClicked(Meal meal);
+        void removeMealFromPlan(Meal meal , String day);
     }
 }

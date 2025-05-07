@@ -19,6 +19,10 @@ public interface WeekPlanDao {
     @Delete
     void deleteWeeklyPlan(WeeklyPlan plan);
 
+
+    @Query("DELETE FROM weekly_plans WHERE mealId = :mealId AND dayOfWeek = :dayOfWeek AND weekStartDate = :weekStartDate")
+    void deleteWeeklyPlanByDetails(String mealId, String dayOfWeek, long weekStartDate);
+
     @Query("SELECT * FROM weekly_plans WHERE weekStartDate= :weekStartDate")
     LiveData<List<WeeklyPlan>> getWeeklyPlans(long weekStartDate);
 

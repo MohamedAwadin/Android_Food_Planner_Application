@@ -1,5 +1,6 @@
 package com.example.elakil.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,8 +8,11 @@ import androidx.room.PrimaryKey;
 public class WeeklyPlan {
     @PrimaryKey(autoGenerate = true)
     private int id ;
+    @ColumnInfo(name = "mealId")
     private String mealId ;
+    @ColumnInfo(name = "dayOfWeek")
     private String dayOfWeek;
+    @ColumnInfo(name = "weekStartDate")
     private long weekStartDate ;
 
     public int getId() {
