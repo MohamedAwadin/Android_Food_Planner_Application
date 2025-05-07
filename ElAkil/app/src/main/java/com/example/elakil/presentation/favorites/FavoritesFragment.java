@@ -1,7 +1,5 @@
 package com.example.elakil.presentation.favorites;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,18 +14,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.elakil.R;
-import com.example.elakil.data.FirebaseSyncRepository;
-import com.example.elakil.data.MealsRepository;
-import com.example.elakil.data.MealsRepositoryImpl;
-import com.example.elakil.data.local.MealsLocalDataSource;
-import com.example.elakil.data.local.MealsLocalDataSourceImpl;
-import com.example.elakil.data.remote.FirebaseDataSource;
-import com.example.elakil.data.remote.MealsRemoteDataSource;
-import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
+import com.example.elakil.model.data.FirebaseSyncRepository;
+import com.example.elakil.model.data.MealsRepository;
+import com.example.elakil.model.data.MealsRepositoryImpl;
+import com.example.elakil.model.data.local.MealsLocalDataSource;
+import com.example.elakil.model.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.model.data.remote.FirebaseDataSource;
+import com.example.elakil.model.data.remote.MealsRemoteDataSource;
+import com.example.elakil.model.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.Meal;
-import com.example.elakil.presentation.auth.view.LoginActivity;
-import com.example.elakil.presentation.auth.view.SignUpActivity;
-import com.example.elakil.presentation.main.view.MainActivity;
 import com.example.elakil.presentation.mealdetails.DishAllDetailedActivity;
 import com.example.elakil.utils.SharedPreferencesUtils;
 

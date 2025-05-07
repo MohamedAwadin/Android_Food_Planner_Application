@@ -13,31 +13,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.elakil.R;
-import com.example.elakil.data.FirebaseSyncRepository;
-import com.example.elakil.data.MealsRepository;
-import com.example.elakil.data.MealsRepositoryImpl;
-import com.example.elakil.data.local.MealsLocalDataSource;
-import com.example.elakil.data.local.MealsLocalDataSourceImpl;
-import com.example.elakil.data.remote.FirebaseDataSource;
-import com.example.elakil.data.remote.MealsRemoteDataSource;
-import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
+import com.example.elakil.model.data.FirebaseSyncRepository;
+import com.example.elakil.model.data.MealsRepository;
+import com.example.elakil.model.data.MealsRepositoryImpl;
+import com.example.elakil.model.data.local.MealsLocalDataSource;
+import com.example.elakil.model.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.model.data.remote.FirebaseDataSource;
+import com.example.elakil.model.data.remote.MealsRemoteDataSource;
+import com.example.elakil.model.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.model.IngredientItem;
 import com.example.elakil.model.Meal;
 import com.example.elakil.model.WeeklyPlan;
-import com.example.elakil.presentation.home.MealAdapter;
 import com.example.elakil.utils.SharedPreferencesUtils;
-
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.Calendar;

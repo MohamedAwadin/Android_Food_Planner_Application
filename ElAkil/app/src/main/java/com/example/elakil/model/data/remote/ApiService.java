@@ -1,4 +1,4 @@
-package com.example.elakil.data.remote;
+package com.example.elakil.model.data.remote;
 
 import com.example.elakil.model.CategoryListResponse;
 import com.example.elakil.model.CountryListResponse;

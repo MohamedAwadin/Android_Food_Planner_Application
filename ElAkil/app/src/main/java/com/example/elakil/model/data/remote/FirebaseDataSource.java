@@ -1,4 +1,4 @@
-package com.example.elakil.data.remote;
+package com.example.elakil.model.data.remote;
 
 import android.util.Log;
 

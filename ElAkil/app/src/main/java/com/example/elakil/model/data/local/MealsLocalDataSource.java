@@ -1,8 +1,8 @@
-package com.example.elakil.data.local;
+package com.example.elakil.model.data.local;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.elakil.data.MealsRepository.LocalCallback;
+import com.example.elakil.model.data.MealsRepository.LocalCallback;
 import com.example.elakil.model.Meal;
 import com.example.elakil.model.WeeklyPlan;
 

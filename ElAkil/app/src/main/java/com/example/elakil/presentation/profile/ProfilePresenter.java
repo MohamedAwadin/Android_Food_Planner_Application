@@ -2,15 +2,13 @@ package com.example.elakil.presentation.profile;
 
 import android.util.Log;
 
-import com.example.elakil.data.FirebaseSyncRepository;
-import com.example.elakil.data.MealsRepository;
+import com.example.elakil.model.data.FirebaseSyncRepository;
+import com.example.elakil.model.data.MealsRepository;
 import com.example.elakil.presentation.auth.presenter.AuthContract;
 import com.example.elakil.presentation.auth.presenter.AuthPresenter;
 import com.example.elakil.utils.SharedPreferencesUtils;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.ktx.Firebase;
 
 public class ProfilePresenter implements ProfileContract.Presenter{
 

@@ -1,6 +1,6 @@
-package com.example.elakil.data;
+package com.example.elakil.model.data;
 
-import com.example.elakil.data.remote.FirebaseDataSource;
+import com.example.elakil.model.data.remote.FirebaseDataSource;
 import com.example.elakil.model.Meal;
 import com.example.elakil.model.WeeklyPlan;
 

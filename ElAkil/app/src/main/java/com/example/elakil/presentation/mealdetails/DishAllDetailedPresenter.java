@@ -4,13 +4,11 @@ import android.os.Looper;
 import android.os.Handler;
 import android.util.Log;
 
-import com.airbnb.lottie.L;
-import com.example.elakil.data.MealsRepository;
+import com.example.elakil.model.data.MealsRepository;
 import com.example.elakil.model.IngredientItem;
 import com.example.elakil.model.Meal;
 import com.example.elakil.model.MealListResponse;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;

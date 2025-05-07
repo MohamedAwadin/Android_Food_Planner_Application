@@ -1,6 +1,6 @@
 package com.example.elakil.presentation.search;
 
-import com.example.elakil.data.MealsRepository;
+import com.example.elakil.model.data.MealsRepository;
 import com.example.elakil.model.Category;
 import com.example.elakil.model.CategoryListResponse;
 import com.example.elakil.model.Country;

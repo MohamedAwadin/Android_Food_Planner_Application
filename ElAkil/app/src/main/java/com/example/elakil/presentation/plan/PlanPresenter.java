@@ -4,13 +4,10 @@ import android.os.Looper;
 import android.os.Handler;
 import android.util.Log;
 
-import com.airbnb.lottie.L;
-import com.example.elakil.data.MealsRepository;
+import com.example.elakil.model.data.MealsRepository;
 import com.example.elakil.model.Meal;
 import com.example.elakil.model.WeeklyPlan;
 import com.example.elakil.utils.SharedPreferencesUtils;
-
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.Arrays;

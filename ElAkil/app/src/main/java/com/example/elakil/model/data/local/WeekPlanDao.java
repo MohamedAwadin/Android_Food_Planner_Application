@@ -1,4 +1,4 @@
-package com.example.elakil.data.local;
+package com.example.elakil.model.data.local;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

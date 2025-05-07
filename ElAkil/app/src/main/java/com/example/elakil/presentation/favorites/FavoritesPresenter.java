@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 
-import com.example.elakil.data.MealsRepository;
+import com.example.elakil.model.data.MealsRepository;
 import com.example.elakil.model.Meal;
 import com.example.elakil.utils.SharedPreferencesUtils;
 

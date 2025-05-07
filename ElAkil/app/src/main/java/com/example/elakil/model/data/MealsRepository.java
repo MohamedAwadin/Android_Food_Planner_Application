@@ -1,9 +1,7 @@
-package com.example.elakil.data;
+package com.example.elakil.model.data;
 
 import androidx.lifecycle.LiveData;
 
-import com.airbnb.lottie.L;
-import com.example.elakil.data.remote.FirebaseDataSource;
 import com.example.elakil.model.CategoryListResponse;
 import com.example.elakil.model.CountryListResponse;
 import com.example.elakil.model.IngredientListResponse;

@@ -12,14 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.elakil.R;
-import com.example.elakil.data.FirebaseSyncRepository;
-import com.example.elakil.data.MealsRepository;
-import com.example.elakil.data.MealsRepositoryImpl;
-import com.example.elakil.data.local.MealsLocalDataSource;
-import com.example.elakil.data.local.MealsLocalDataSourceImpl;
-import com.example.elakil.data.remote.FirebaseDataSource;
-import com.example.elakil.data.remote.MealsRemoteDataSource;
-import com.example.elakil.data.remote.MealsRemoteDataSourceImpl;
+import com.example.elakil.model.data.FirebaseSyncRepository;
+import com.example.elakil.model.data.MealsRepository;
+import com.example.elakil.model.data.MealsRepositoryImpl;
+import com.example.elakil.model.data.local.MealsLocalDataSource;
+import com.example.elakil.model.data.local.MealsLocalDataSourceImpl;
+import com.example.elakil.model.data.remote.FirebaseDataSource;
+import com.example.elakil.model.data.remote.MealsRemoteDataSource;
+import com.example.elakil.model.data.remote.MealsRemoteDataSourceImpl;
 import com.example.elakil.presentation.auth.view.LoginActivity;
 import com.example.elakil.utils.SharedPreferencesUtils;
 
