@@ -1,107 +1,156 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/homeFragment"
-    tools:context=".presentation.home.HomeFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    tools:context=".presentation.home.HomeFragment">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/MF_Vertical_Start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/layoutNormal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="visible">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/MF_Vertical_Start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.05" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/MF_Vertical_End"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.91727495" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/MF_Horizontal_Top"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_percent="0.09" />
+
+                        <androidx.constraintlayout.widget.Guideline
+                            android:id="@+id/MF_Horizontal_Bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintGuide_begin="680dp" />
+
+                        <TextView
+                            android:id="@+id/textViewDailyRecommendation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/agbalumo"
+                            android:text="Daily Recommendation"
+                            android:textColor="@color/red"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/MF_Horizontal_Top"
+                            app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End"
+                            app:layout_constraintHorizontal_bias="0.045"
+                            app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.627" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewDaily"
+                            android:layout_width="321dp"
+                            android:layout_height="348dp"
+                            android:layout_marginTop="8dp"
+                            android:foregroundGravity="center"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/MF_Horizontal_Top" />
+
+                        <TextView
+                            android:id="@+id/textViewMoreMeals"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/agbalumo"
+                            android:text="More You Might Like ♥"
+                            android:textColor="@color/red"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End"
+                            app:layout_constraintHorizontal_bias="0.016"
+                            app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start"
+                            app:layout_constraintTop_toBottomOf="@+id/recyclerViewDaily" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerViewMoreMeals"
+                            android:layout_width="340dp"
+                            android:layout_height="275dp"
+                            android:layout_marginTop="10dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End"
+                            app:layout_constraintHorizontal_bias="0.333"
+                            app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start"
+                            app:layout_constraintTop_toBottomOf="@+id/textViewMoreMeals" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <LinearLayout
+            android:id="@+id/layoutNoInternet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.05" />
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="gone">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/MF_Vertical_End"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.91727495" />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/no_wifi"
+                    android:contentDescription="No Internet Icon" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/MF_Horizontal_Top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.09" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Internet Connection"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="16dp" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/MF_Horizontal_Bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="680dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Please check your connection and try again."
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp" />
 
-        <TextView
-            android:id="@+id/textViewDailyRecommendation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/agbalumo"
-            android:text="Daily Recommendation"
-            android:textColor="@color/red"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/MF_Horizontal_Top"
-            app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End"
-            app:layout_constraintHorizontal_bias="0.045"
-            app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.627" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewDaily"
-            android:layout_width="321dp"
-            android:layout_height="348dp"
-            android:layout_marginTop="8dp"
-            android:foregroundGravity="center"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/MF_Horizontal_Top" />
-
-        <TextView
-            android:id="@+id/textViewMoreMeals"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/agbalumo"
-            android:text="More You Might Like ♥"
-            android:textColor="@color/red"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End"
-            app:layout_constraintHorizontal_bias="0.016"
-            app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewDaily" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMoreMeals"
-            android:layout_width="340dp"
-            android:layout_height="275dp"
-            android:layout_marginTop="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toStartOf="@+id/MF_Vertical_End"
-            app:layout_constraintHorizontal_bias="0.333"
-            app:layout_constraintStart_toStartOf="@+id/MF_Vertical_Start"
-            app:layout_constraintTop_toBottomOf="@+id/textViewMoreMeals" />
-    
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+                <Button
+                    android:id="@+id/buttonRetry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/button_background_color"
+                    android:textColor="@color/button_text_color"
+                    android:fontFamily="@font/agbalumo"
+                    android:text="Retry"
+                    android:layout_marginTop="16dp" />
+        </LinearLayout>
+</FrameLayout>
