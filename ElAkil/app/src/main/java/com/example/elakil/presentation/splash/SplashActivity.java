@@ -19,7 +19,7 @@ import com.example.elakil.utils.SharedPreferencesUtils;
 
 public class SplashActivity extends AppCompatActivity implements SplashContract.View{
 
-    private static final int SPALSH_DURATION = 3000;
+    private static final int SPALSH_DURATION = 10000;
     private SplashContract.Presenter presenter ;
     private LottieAnimationView lottieAnimationView ;
 
@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity implements SplashContract.
     @Override
     public void navigateToMain() {
         startActivity(new Intent(SplashActivity.this , MainActivity.class));
-        //finish();
+        finish();
 
     }
 }

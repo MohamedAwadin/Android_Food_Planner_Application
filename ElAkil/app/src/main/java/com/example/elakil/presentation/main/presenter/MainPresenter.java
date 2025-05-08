@@ -5,12 +5,16 @@ import com.example.elakil.presentation.home.HomeFragment;
 import com.example.elakil.presentation.plan.PlanFragment;
 import com.example.elakil.presentation.profile.ProfileFragment;
 import com.example.elakil.presentation.search.SearchFragment;
+import com.example.elakil.utils.SharedPreferencesUtils;
 
 public class MainPresenter implements MainContract.Presenter{
     private MainContract.View view ;
 
+
     public MainPresenter(MainContract.View view){
+
         this.view = view ;
+
     }
 
     @Override
@@ -27,12 +31,14 @@ public class MainPresenter implements MainContract.Presenter{
 
     @Override
     public void navigateToFavorites() {
-            view.showFragment(new FavoritesFragment());
+
+        view.showFragment(new FavoritesFragment());
     }
 
     @Override
     public void navigateToPlan() {
-            view.showFragment(new PlanFragment());
+
+        view.showFragment(new PlanFragment());
     }
 
     @Override

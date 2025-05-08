@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "969806453085",
+    "firebase_url": "https://mealplanner-ea7a1-default-rtdb.firebaseio.com",
+    "project_id": "mealplanner-ea7a1",
+    "storage_bucket": "mealplanner-ea7a1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969806453085:android:da73c261864f02af45b0b4",
+        "android_client_info": {
+          "package_name": "com.example.elakil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969806453085-tkhhrc6823o5s5eqshdsih1mk6v0djap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.elakil",
+            "certificate_hash": "ab92f5ca91c527f1ce805c2b9fa9636751f4e830"
+          }
+        },
+        {
+          "client_id": "969806453085-24qbkb6l4190uia54r7eoj08tpvbmn5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYbjkuLUWDhu5riNH9LKCi1zllLC4iqvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969806453085-24qbkb6l4190uia54r7eoj08tpvbmn5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

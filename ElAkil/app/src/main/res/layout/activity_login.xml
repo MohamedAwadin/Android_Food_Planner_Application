@@ -13,14 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="45dp" />
+        app:layout_constraintGuide_end="294dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/Top_Guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.02" />
+        app:layout_constraintGuide_percent="0.13" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/Bottom_Guideline"
@@ -43,147 +43,172 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
 
+
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
         android:fontFamily="@font/agbalumo"
         android:text="Ya Marhab bel ElAkil"
         android:textColor="@color/red"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/Top_Guideline"
         app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
         app:layout_constraintStart_toStartOf="@+id/Left_Guideline"
-        app:layout_constraintTop_toTopOf="@+id/Top_Guideline"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.741" />
 
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="328dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="178dp"
-        android:layout_marginBottom="70dp"
-        android:hint="Email"
-        android:fontFamily="@font/agbalumo"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
-        app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/textInputLayout3"
+        android:layout_width="329dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="52dp"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="315dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="384dp"
-        android:hint="Password"
-        android:fontFamily="@font/agbalumo"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/agbalumo"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:id="@+id/textInputLayout4"
+        android:layout_width="329dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="42dp"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/agbalumo"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
 
-        android:text="Login"
+        android:layout_marginStart="130dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="12dp"
         android:backgroundTint="@color/button_background_color"
+        android:fontFamily="@font/agbalumo"
+        android:text="Login"
         android:textColor="@color/button_text_color"
         android:textSize="15dp"
-        android:fontFamily="@font/agbalumo"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/buttonSignUp"
-        app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonSignUp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
 
-        android:text="Sign Up"
-        android:fontFamily="@font/agbalumo"
+        android:layout_marginStart="130dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/button_background_color"
+        android:fontFamily="@font/agbalumo"
+        android:text="Sign Up"
         android:textColor="@color/button_text_color"
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/buttonGuest"
-        app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonGuest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginEnd="121dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/button_background_color"
-        android:text="Continue as Guest"
         android:fontFamily="@font/agbalumo"
+        android:text="Continue as Guest"
         android:textColor="@color/button_text_color"
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/buttonGoogleSignIn"
-        app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/buttonGoogleSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/Middle_Guideline"
-        app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline"
+        android:layout_marginStart="166dp"
+        android:layout_marginEnd="167dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="@font/agbalumo"
         android:text="Email"
-        android:textSize="20dp"
+        android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout3"
         app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
         app:layout_constraintHorizontal_bias="0.003"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline" />
+        app:layout_constraintStart_toStartOf="@+id/Left_Guideline"
+        app:layout_constraintTop_toTopOf="@+id/Top_Guideline"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="277dp"
         android:fontFamily="@font/agbalumo"
         android:text="Password"
-        android:textSize="20dp"
+        android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
-        app:layout_constraintEnd_toStartOf="@+id/Right_Guideline"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintStart_toStartOf="@+id/Left_Guideline" />
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
