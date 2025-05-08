@@ -133,12 +133,11 @@ public class DishAllDetailedPresenter implements DishAllDetailedContract.Present
                 repository.insertMeals(currentMeal, success -> {
                     mainHandler.post(() -> {
                         if (success) {
-//                            view.updateFavoriteButton(true);
+
                             view.updateFavoriteButton(currentMeal.isFavorite());
                             System.out.println("Debug: Toggled favorite status for meal " + currentMeal.getIdMeal() + " to " + currentMeal.isFavorite());
                         } else {
-//                            currentMeal.setFavorite(false);
-//                            view.updateFavoriteButton(false);
+
                             currentMeal.setFavorite(isCurrentlyFavorite);
                             view.updateFavoriteButton(isCurrentlyFavorite);
                             view.showError("Failed to add to favorites");

@@ -37,7 +37,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
         textViewUsername = view.findViewById(R.id.textViewUsername);

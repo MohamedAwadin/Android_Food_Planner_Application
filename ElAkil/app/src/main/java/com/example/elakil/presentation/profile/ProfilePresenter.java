@@ -49,7 +49,7 @@ public class ProfilePresenter implements ProfileContract.Presenter{
 
     @Override
     public void logout() {
-        // Clear local database only
+
         repository.clearLocalData(success -> {
             if (success) {
 

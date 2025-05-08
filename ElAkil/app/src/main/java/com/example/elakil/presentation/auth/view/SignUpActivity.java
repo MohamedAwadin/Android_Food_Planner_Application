@@ -52,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity implements AuthContract.Si
 
         presenter = new AuthPresenter(this, new SharedPreferencesUtils(this));
 
-        // Use the Web Client ID from google-services.json
+
         String webClientId = "969806453085-24qbkb6l4190uia54r7eoj08tpvbmn5j.apps.googleusercontent.com";
         Log.d(TAG, "Using Web Client ID: " + webClientId);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

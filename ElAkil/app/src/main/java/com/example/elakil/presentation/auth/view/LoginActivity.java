@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements AuthContract.Log
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        // Initialize repositories
+
         MealsRemoteDataSource remoteDataSource = MealsRemoteDataSourceImpl.getInstance();
         MealsLocalDataSource localDataSource = MealsLocalDataSourceImpl.getInstance(this);
         FirebaseDataSource firebaseDataSource = new FirebaseDataSource();
@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements AuthContract.Log
 
                 hideLoding();
                 showError("Failed to sync favorites: " + errorMessage);
-                // Proceed to MainActivity even if sync fails
+
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
 
@@ -184,50 +184,4 @@ public class LoginActivity extends AppCompatActivity implements AuthContract.Log
         });
     }
 
-//    private void retrieveWeeklyPlans() {
-//        System.out.println("Debug: Retrieving weekly plans from Firebase");
-//        firebaseSyncRepository.retrieveWeeklyPlans(new FirebaseDataSource.WeeklyPlansCallback() {
-//            @Override
-//            public void onSuccess(List<WeeklyPlan> plans) {
-//                System.out.println("Debug: Retrieved " + plans.size() + " weekly plans from Firebase");
-//                if (plans.isEmpty()) {
-//                    // If no plans, complete the sync process
-//                    completeSync();
-//                    return;
-//                }
-//
-//                // Batch insert weekly plans to local database
-//                AtomicInteger pendingInserts = new AtomicInteger(plans.size());
-//                for (WeeklyPlan plan : plans) {
-//                    mealsRepository.insertWeeklyPlan(plan, success -> {
-//                        if (success) {
-//                            System.out.println("Debug: Synced weekly plan for meal " + plan.getMealId() + " to local database");
-//                        } else {
-//                            System.out.println("Debug: Failed to sync weekly plan for meal " + plan.getMealId());
-//                        }
-//                        if (pendingInserts.decrementAndGet() == 0) {
-//                            // All plans inserted, complete the sync
-//                            completeSync();
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(String errorMessage) {
-//                System.out.println("Debug: Failed to retrieve weekly plans from Firebase: " + errorMessage);
-//                // Complete sync even if retrieval fails
-//                completeSync();
-//            }
-//        });
-//    }
-//
-//    private void completeSync() {
-//        System.out.println("Debug: Firebase sync completed");
-//        mainHandler.post(() -> {
-//            hideLoding();
-//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//            finish();
-//        });
-//    }
 }

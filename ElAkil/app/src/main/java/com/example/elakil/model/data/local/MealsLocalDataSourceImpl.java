@@ -36,18 +36,15 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
 
     @Override
     public void insertMeal(Meal meal, LocalCallback callback) {
-//        executorService.execute(() -> {
-//            mealDao.insertMeal(meal);
-//            callback.onComplete(true);
-//        });
+
 
         executorService.execute(() -> {
             try {
                 Meal existingMeal = mealDao.getMealByid(meal.getIdMeal());
                 if (existingMeal != null) {
-                    mealDao.updateMeal(meal); // Update existing meal
+                    mealDao.updateMeal(meal);
                 } else {
-                    mealDao.insertMeal(meal); // Insert new meal
+                    mealDao.insertMeal(meal);
                 }
                 callback.onComplete(true);
                 System.out.println("Debug: Inserted/Updated meal " + meal.getIdMeal() + " with isFavorite = " + meal.isFavorite());
@@ -90,10 +87,7 @@ public class MealsLocalDataSourceImpl implements MealsLocalDataSource{
 
     @Override
     public void deleteWeeklyPlan(WeeklyPlan plan, MealsRepository.LocalCallback callback) {
-//        executorService.execute(() -> {
-//            weekPlanDao.deleteWeeklyPlan(plan);
-//            callback.onComplete(true);
-//        });
+
 
         executorService.execute(() -> {
             try {

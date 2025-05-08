@@ -94,11 +94,7 @@ public class SearchFragment extends Fragment implements SearchContract.View{
         return view;
     }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//    }
+
 
     @Override
     public void showLoading() {

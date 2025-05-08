@@ -130,7 +130,7 @@ public class DishAllDetailedActivity extends AppCompatActivity implements DishAl
                 calendar.set(Calendar.SECOND , 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 long weekStartDate = calendar.getTimeInMillis();
-                //System.out.println("Debug: Adding plan with weekStartDate = " + weekStartDate); // Debug log
+
                 Log.d(TAG , "Debug: Adding plan with weekStartDate = " + weekStartDate);
 
 
